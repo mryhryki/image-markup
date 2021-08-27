@@ -29,7 +29,6 @@ export const ImageFileDragAndDropArea: React.FC<Props> = (props) => {
         event.preventDefault();
       }}
       onDrop={(event) => {
-        console.debug(event)
         event.preventDefault();
         const file = event.dataTransfer.files.item(0);
         if (file == null) {
