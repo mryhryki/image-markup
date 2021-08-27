@@ -3,6 +3,7 @@ import { ImageFileDragAndDropArea } from "./components/dnd";
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "./components/canvas";
 import { drawAllow } from "./components/draw/allow";
+import { setMouseEventListener } from "./util/mouse_event";
 
 const Header = styled.header`
   border-bottom: 1px solid silver;
@@ -54,7 +55,6 @@ export const App = React.FC = () => {
     fileReader.addEventListener("load", (event) => {
       const image = new Image();
       image.onload = () => {
-        console.debug(image.width, image.height);
         canvas.width = image.width;
         canvas.height = image.height;
       };
@@ -68,15 +68,15 @@ export const App = React.FC = () => {
       }
     });
     fileReader.readAsDataURL(imageFile);
-
-    setTimeout(() => {
-      drawAllow(context, { x: 50, y: 30 }, { x: 70, y: 30 });
-      drawAllow(context, { x: 50, y: 60 }, { x: 160, y: 60 });
-      drawAllow(context, { x: 50, y: 90 }, { x: 360, y: 90 });
-      drawAllow(context, { x: 50, y: 120 }, { x: 180, y: 240 });
-      drawAllow(context, { x: 180, y: 120 }, { x: 50, y: 240 });
-      drawAllow(context, { x: 230, y: 30 }, { x: 230, y: 240 });
-    }, 200);
+    setMouseEventListener(canvas, (event) => {
+      switch (event.type) {
+        case "moved":
+          drawAllow(context, event.start, event.current)
+          break
+        case "moving":
+          console.debug(event)
+      }
+    })
   }, [context, imageFile]);
 
   return (
@@ -88,7 +88,7 @@ export const App = React.FC = () => {
         {imageFile == null ? (
           <ImageFileDragAndDropArea onImageFileDrop={setImageFile}/>
         ) : null}
-        <Canvas canvasRef={canvasRef}/>
+        <Canvas canvasRef={canvasRef} />
       </ImageArea>
       <Footer>
         Footer

@@ -1,7 +1,4 @@
-export interface Position {
-  x: number;
-  y: number;
-}
+import { Position } from "../../util/mouse_event";
 
 export const drawAllow = (context: CanvasRenderingContext2D, from: Position, to: Position): void => {
   const angle = Math.atan2(from.y - to.y, from.x - to.x);

@@ -2,9 +2,9 @@ import React, { RefObject } from "react";
 import styled from "styled-components";
 
 const FitCanvas = styled.canvas`
-  height: 100%;
+  max-height: 100%;
   object-fit: contain;
-  width: 100%;
+  max-width: 100%;
 `
 
 interface Props {
