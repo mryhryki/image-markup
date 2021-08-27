@@ -6,11 +6,12 @@ import { drawAllow } from "./components/draw/allow";
 
 const Header = styled.header`
   border-bottom: 1px solid silver;
+  box-sizing: border-box;
   line-height: 20px;
   padding: 10px;
-  width: 100vw;
   position: absolute;
   top: 0;
+  width: 100vw;
 `;
 
 const Title = styled.h1`
@@ -21,7 +22,7 @@ const Title = styled.h1`
 
 const ImageArea = styled.div`
   bottom: 41px;
-  overflow: scroll;
+  overflow: hidden;
   position: absolute;
   top: 41px;
   width: 100vw;
@@ -30,6 +31,7 @@ const ImageArea = styled.div`
 const Footer = styled.footer`
   border-top: 1px solid silver;
   bottom: 0;
+  box-sizing: border-box;
   line-height: 24px;
   padding: 8px;
   width: 100vw;
@@ -43,21 +45,27 @@ export const App = React.FC = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (canvas == null) return;
-    setContext(canvas.getContext("2d"));
-  }, [canvasRef.current]);
-
-  useEffect(() => {
-    if (context == null || imageFile == null) return;
+    if (canvas == null || imageFile == null) return;
     const fileReader = new FileReader();
+    const context = canvas.getContext("2d");
+    if (context == null) return;
+    setContext(context);
+
     fileReader.addEventListener("load", (event) => {
       const image = new Image();
+      image.onload = () => {
+        console.debug(image.width, image.height);
+        canvas.width = image.width;
+        canvas.height = image.height;
+      };
       image.addEventListener("load", () => {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.drawImage(image, 0, 0);
       });
-      // @ts-ignore
-      image.src = event.target.result;
+      const src = event.target?.result ?? "";
+      if (typeof src === "string") {
+        image.src = src;
+      }
     });
     fileReader.readAsDataURL(imageFile);
 

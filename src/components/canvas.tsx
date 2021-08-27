@@ -1,4 +1,11 @@
 import React, { RefObject } from "react";
+import styled from "styled-components";
+
+const FitCanvas = styled.canvas`
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+`
 
 interface Props {
   canvasRef: RefObject<HTMLCanvasElement>;
@@ -7,5 +14,5 @@ interface Props {
 export const Canvas: React.FC<Props> = (props) => {
   const { canvasRef } = props;
 
-  return <canvas ref={canvasRef} width={1000} height={1000}/>;
+  return <FitCanvas ref={canvasRef} />;
 };

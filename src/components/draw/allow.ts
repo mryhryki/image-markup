@@ -16,7 +16,7 @@ export const drawAllow = (context: CanvasRenderingContext2D, from: Position, to:
   positions.push({ x: from.x - headLen * Math.cos(angle + Math.PI / 14), y: from.y - headLen * Math.sin(angle + Math.PI / 14) });
   positions.push({ x: from.x - headLen * Math.cos(angle + Math.PI / 6), y: from.y - headLen * Math.sin(angle + Math.PI / 6) });
   positions.push(from);
-  console.debug(positions.map((p) => JSON.stringify(p)).join("\n"))
+  // console.debug(positions.map((p) => JSON.stringify(p)).join("\n"))
 
   context.strokeStyle = "#0066ff";
   context.fillStyle = "#0066ff";
