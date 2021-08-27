@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ImageFileDragAndDropArea } from "./components/dnd";
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "./components/canvas";
+import { drawAllow } from "./components/draw/allow";
 
 const Header = styled.header`
   border-bottom: 1px solid silver;
@@ -49,12 +50,9 @@ export const App = React.FC = () => {
   useEffect(() => {
     if (context == null || imageFile == null) return;
     const fileReader = new FileReader();
-    console.debug(context, imageFile);
     fileReader.addEventListener("load", (event) => {
-      console.debug(event);
       const image = new Image();
       image.addEventListener("load", () => {
-        console.debug(image)
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.drawImage(image, 0, 0);
       });
@@ -62,6 +60,15 @@ export const App = React.FC = () => {
       image.src = event.target.result;
     });
     fileReader.readAsDataURL(imageFile);
+
+    setTimeout(() => {
+      drawAllow(context, { x: 50, y: 30 }, { x: 70, y: 30 });
+      drawAllow(context, { x: 50, y: 60 }, { x: 160, y: 60 });
+      drawAllow(context, { x: 50, y: 90 }, { x: 360, y: 90 });
+      drawAllow(context, { x: 50, y: 120 }, { x: 180, y: 240 });
+      drawAllow(context, { x: 180, y: 120 }, { x: 50, y: 240 });
+      drawAllow(context, { x: 230, y: 30 }, { x: 230, y: 240 });
+    }, 200);
   }, [context, imageFile]);
 
   return (
