@@ -4,7 +4,6 @@ import { PermitFileType } from "../util/select_image_file";
 
 const StyledWrapper = styled.div`
   align-items: center;
-  background-color: #ccf;
   display: flex;
   height: 100%;
   justify-content: center;

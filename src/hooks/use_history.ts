@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { addHistory as addHistoryToIndexedDb, initIndexedDb } from "../util/history";
+import { addHistory as addHistoryToIndexedDb, History, initIndexedDb, listHistory } from "../util/history";
 
 interface UseHistoryState {
-  canUseHistory: boolean;
   addHistory: (canvas: HTMLCanvasElement) => void;
+  canUseHistory: boolean;
+  histories: History[];
 }
 
 export const useHistory = (): UseHistoryState => {
   const [canUseIndexedDb, setCanUseIndexedDb] = useState(false);
+  const [histories, setHistories] = useState<History[]>([]);
 
   const addHistory = (canvas: HTMLCanvasElement): void => {
     if (!canUseIndexedDb) return;
@@ -28,12 +30,18 @@ export const useHistory = (): UseHistoryState => {
     console.debug(thumbnailDataUrl);
     const dataUrl = canvas.toDataURL("image/jpeg");
     const datetime = new Date().toISOString();
-    addHistoryToIndexedDb(datetime, dataUrl, thumbnailDataUrl);
+    addHistoryToIndexedDb(datetime, dataUrl, thumbnailDataUrl).then(() => listHistory(20, 1)).then(setHistories);
   };
 
   useEffect(() => {
-    initIndexedDb().then(setCanUseIndexedDb);
+    (async () => {
+      const canUseIndexedDb = await initIndexedDb();
+      setCanUseIndexedDb(canUseIndexedDb);
+      if (canUseIndexedDb) {
+        setHistories(await listHistory(20, 1));
+      }
+    })();
   }, [setCanUseIndexedDb]);
 
-  return { canUseHistory: canUseIndexedDb, addHistory };
+  return { canUseHistory: canUseIndexedDb, histories, addHistory };
 };

@@ -11,6 +11,18 @@ import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { Colors } from "./components/colors";
 import { useHistory } from "./hooks/use_history";
+import { History } from "./components/history";
+
+const Content = styled.div`
+  position: absolute;
+  left: 4px;
+  bottom: 44px;
+  right: 4px;
+  top: 44px;
+  align-items: stretch;
+  flex-direction: row;
+  display: flex;
+`;
 
 const Button = styled.button`
   border-radius: 2px;
@@ -26,13 +38,14 @@ const Button = styled.button`
 export const App: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [color, setColor] = useState<string>("default");
-  const { canUseHistory, addHistory } = useHistory();
+  const { canUseHistory, histories, addHistory } = useHistory();
 
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const canvas = canvasRef.current;
   if (canvas == null) return null;
 
+  useEffect(() => addHistory(canvas), [canvas]);
   useEffect(() => {
     const context = canvas?.getContext("2d", { alpha: false });
     if (context == null || imageFile == null) return;
@@ -57,8 +70,15 @@ export const App: React.FC = () => {
   return (
     <Wrapper onImageFileDrop={setImageFile}>
       <Header/>
-      <Canvas canvasRef={canvasRef} showUploadMessage={imageFile == null} onImageFileSelected={setImageFile}/>
-      {canUseHistory && <div>History</div>}
+      <Content>
+        <Canvas canvasRef={canvasRef} showUploadMessage={imageFile == null} onImageFileSelected={setImageFile}/>
+        {canUseHistory && context != null && (
+          <History
+            histories={histories}
+            onSelect={({ dataUrl }) => drawImageToCanvas(dataUrl, canvas, context)}
+          />
+        )}
+      </Content>
       <Footer>
         {/*<Button>🔙</Button>*/}
         <Button onClick={() => downloadCanvasImage(canvas)}>⬇️</Button>

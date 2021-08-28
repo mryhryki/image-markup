@@ -7,14 +7,11 @@ const CanvasWrapper = styled.div`
   background-color: #f6f6f6;
   border-radius: 2px;
   border: 1px solid silver;
-  bottom: 44px;
   display: flex;
+  flex: 1;
   justify-content: center;
-  left: 4px;
+  margin: 4px;
   overflow: hidden;
-  position: absolute;
-  right: 4px;
-  top: 44px;
 `;
 
 const Message = styled.div`
