@@ -1,6 +1,6 @@
 import { Position } from "../util/mouse_event";
 
-export const drawAllow = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
+export const drawArrow = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
   context.strokeStyle = color;
   context.fillStyle = color;
 

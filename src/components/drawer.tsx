@@ -1,23 +1,17 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Button } from "./button";
+import { ButtonWithIcon } from "./button_with_icon";
 
-const DrawersWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-`;
-
-export type Drawer = "allow" | "rectangle_border"
+export type Drawer = "arrow" | "rectangle_border"
 const Drawers: Drawer[] = [
-  "allow",
+  "arrow",
   "rectangle_border",
 ];
 
 const Emoji = {
-  allow: "↙️",
-  rectangle_border: "🔳️"
-}
+  arrow: "↙️",
+  rectangle_border: "🔳️",
+};
 
 interface Props {
   drawer: Drawer;
@@ -34,16 +28,10 @@ export const Drawer: React.FC<Props> = (props) => {
   }, [drawer]);
 
   return (
-    <DrawersWrapper>
+    <>
       {Drawers.map((d) => (
-        <Button
-          key={d}
-          onClick={() => setDrawer(d)}
-          className={d === drawer ? "selected" : ""}
-        >
-          {Emoji[d]}
-        </Button>
+        <ButtonWithIcon alt={drawer} iconName={d} onClick={() => setDrawer(d)} selected={d === drawer}/>
       ))}
-    </DrawersWrapper>
+    </>
   );
 };

@@ -1,12 +1,34 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Button } from "./button";
 
-const ColorsWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-`
+
+export const ButtonColor = styled.button`
+  border: none;
+  border-radius: 2px;
+  font-size: 20px;
+  height: 24px;
+  padding: 0;
+  line-height: 24px;
+  margin: 0 4px;
+  min-width: 24px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+
+  &.selected:after {
+    border-color: white;
+    border-style: solid;
+    border-width: 0 0 4px 4px;
+    content: " ";
+    height: 6px;
+    left: 4px;
+    position: absolute;
+    top: 5px;
+    transform: rotate(-45deg);
+    width: 12px;
+  }
+`;
+
 
 const colors: string[] = [
   "#ff0000",
@@ -30,17 +52,17 @@ export const Colors: React.FC<Props> = (props) => {
   }, [color]);
 
   return (
-    <ColorsWrapper>
+    <>
       {colors.map((c) => (
-        <Button
+        <ButtonColor
           key={c}
           style={{ backgroundColor: c }}
           onClick={() => setColor(c)}
           className={c === color ? "selected" : ""}
         >
           {" "}
-        </Button>
+        </ButtonColor>
       ))}
-    </ColorsWrapper>
+    </>
   );
 };

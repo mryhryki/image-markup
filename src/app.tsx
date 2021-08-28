@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "./components/canvas";
-import { drawAllow } from "./drawer/allow";
+import { drawArrow } from "./drawer/arrow";
 import { setMouseEventListener } from "./util/mouse_event";
 import { drawImageToCanvas } from "./util/draw_image_to_canvas";
 import { fileToDataUrl } from "./util/file_to_data_url";
@@ -14,7 +14,7 @@ import { useHistory } from "./hooks/use_history";
 import { History } from "./components/history";
 import { drawRectangleBorder } from "./drawer/rectangle_border";
 import { Drawer } from "./components/drawer";
-import { Button } from "./components/button";
+import { ButtonWithIcon } from "./components/button_with_icon";
 
 const Content = styled.div`
   position: absolute;
@@ -29,28 +29,26 @@ const Content = styled.div`
 
 const FooterGroup = styled.div`
   margin: 0 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const App: React.FC = () => {
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [drawer, setDrawer] = useState<Drawer>("allow");
+  const [rendered, setRendered] = useState(false);
+  const [drawer, setDrawer] = useState<Drawer>("arrow");
   const [color, setColor] = useState<string>("default");
   const { canUseHistory, histories, addHistory } = useHistory();
 
-  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const canvas = canvasRef.current;
-  if (canvas == null) return null;
+  const [context, setContext] = useState<CanvasRenderingContext2D | null>(canvas.getContext("2d", { alpha: false }));
 
-  useEffect(() => addHistory(canvas), [canvas]);
   useEffect(() => {
-    const context = canvas?.getContext("2d", { alpha: false });
-    if (context == null || imageFile == null) return;
-    setContext(context);
-    fileToDataUrl(imageFile)
-      .then((dataUrl) => drawImageToCanvas(dataUrl, canvas, context))
-      .then(() => addHistory(canvas));
-  }, [canvas, imageFile]);
+    if (rendered) {
+      addHistory(canvas);
+    }
+  }, [rendered, canvas]);
 
   useEffect(() => {
     if (context == null) return;
@@ -58,8 +56,8 @@ export const App: React.FC = () => {
       switch (event.type) {
         case "moved":
           switch (drawer) {
-            case "allow":
-              drawAllow(context, event.start, event.current, color);
+            case "arrow":
+              drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
               drawRectangleBorder(context, event.start, event.current, color);
@@ -73,21 +71,38 @@ export const App: React.FC = () => {
     });
   }, [canvas, context, drawer, color]);
 
+  const onImageFileSelected = (imageFile: File): void => {
+    if (context == null) return;
+    setRendered(true);
+    setContext(context);
+    fileToDataUrl(imageFile)
+      .then((dataUrl) => drawImageToCanvas(dataUrl, canvas, context))
+      .then(() => addHistory(canvas));
+  };
+
   return (
-    <Wrapper onImageFileDrop={setImageFile}>
+    <Wrapper onImageFileDrop={onImageFileSelected}>
       <Header/>
       <Content>
-        <Canvas canvasRef={canvasRef} showUploadMessage={imageFile == null} onImageFileSelected={setImageFile}/>
+        <Canvas canvasRef={canvasRef} showUploadMessage={!rendered} onImageFileSelected={onImageFileSelected}/>
         {canUseHistory && context != null && (
           <History
             histories={histories}
-            onSelect={({ dataUrl }) => drawImageToCanvas(dataUrl, canvas, context)}
+            onSelect={({ dataUrl }) => {
+              drawImageToCanvas(dataUrl, canvas, context)
+                .then(() => setRendered(true));
+            }}
           />
         )}
       </Content>
       <Footer>
         <FooterGroup>
-          <Button onClick={() => downloadCanvasImage(canvas)}>⬇️</Button>
+          <ButtonWithIcon
+            alt="download"
+            iconName="download"
+            onClick={() => downloadCanvasImage(canvas)}
+            selected={false}
+          />
         </FooterGroup>
         <FooterGroup>
           <Drawer drawer={drawer} setDrawer={setDrawer}/>
