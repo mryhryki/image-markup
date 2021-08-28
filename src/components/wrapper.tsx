@@ -1,29 +1,26 @@
 import React from "react";
 import styled from "styled-components";
+import { PermitFileType } from "../util/select_image_file";
 
-const DnD = styled.div`
+const StyledWrapper = styled.div`
   align-items: center;
   background-color: #ccf;
   display: flex;
   height: 100%;
   justify-content: center;
   width: 100%;
-`
-
-const Message = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-`
+`;
 
 interface Props {
   onImageFileDrop: (file: File) => void;
+  children: React.ReactNode;
 }
 
-export const ImageFileDragAndDropArea: React.FC<Props> = (props) => {
-  const { onImageFileDrop } = props;
+export const Wrapper: React.FC<Props> = (props) => {
+  const { onImageFileDrop, children } = props;
 
   return (
-    <DnD
+    <StyledWrapper
       onDragOver={(event) => {
         event.stopPropagation();
         event.preventDefault();
@@ -33,15 +30,13 @@ export const ImageFileDragAndDropArea: React.FC<Props> = (props) => {
         const file = event.dataTransfer.files.item(0);
         if (file == null) {
           return;
-        } else if (!file.type.startsWith("image/")) {
+        } else if (!PermitFileType.includes(file.type)) {
           return;
         }
         onImageFileDrop(file);
       }}
     >
-      <Message>
-        Drop image file here!
-      </Message>
-    </DnD>
+      {children}
+    </StyledWrapper>
   );
 };
