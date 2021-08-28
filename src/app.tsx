@@ -42,13 +42,7 @@ export const App: React.FC = () => {
 
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const canvas = canvasRef.current;
-  const [context, setContext] = useState<CanvasRenderingContext2D | null>(canvas.getContext("2d", { alpha: false }));
-
-  useEffect(() => {
-    if (rendered) {
-      addHistory(canvas);
-    }
-  }, [rendered, canvas]);
+  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
     if (context == null) return;
@@ -66,12 +60,13 @@ export const App: React.FC = () => {
           addHistory(canvas);
           break;
         case "moving":
-          console.debug(event);
+        // TODO: Realtime Preview
       }
     });
   }, [canvas, context, drawer, color]);
 
   const onImageFileSelected = (imageFile: File): void => {
+    const context = canvas.getContext("2d", { alpha: false });
     if (context == null) return;
     setRendered(true);
     setContext(context);
@@ -85,11 +80,14 @@ export const App: React.FC = () => {
       <Header/>
       <Content>
         <Canvas canvasRef={canvasRef} showUploadMessage={!rendered} onImageFileSelected={onImageFileSelected}/>
-        {canUseHistory && context != null && (
+        {canUseHistory && (
           <History
             histories={histories}
             onSelect={({ dataUrl }) => {
-              drawImageToCanvas(dataUrl, canvas, context)
+              const ctx = context ?? canvas.getContext("2d", { alpha: false });
+              if (ctx == null) return;
+              setContext(ctx);
+              drawImageToCanvas(dataUrl, canvas, ctx)
                 .then(() => setRendered(true));
             }}
           />
