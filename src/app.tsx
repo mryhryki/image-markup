@@ -10,6 +10,7 @@ import { Wrapper } from "./components/wrapper";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { Colors } from "./components/colors";
+import { useHistory } from "./hooks/use_history";
 
 const Button = styled.button`
   border-radius: 2px;
@@ -25,6 +26,7 @@ const Button = styled.button`
 export const App: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [color, setColor] = useState<string>("default");
+  const { canUseHistory, addHistory } = useHistory();
 
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
@@ -44,6 +46,7 @@ export const App: React.FC = () => {
       switch (event.type) {
         case "moved":
           drawAllow(context, event.start, event.current, color);
+          addHistory(canvas);
           break;
         case "moving":
           console.debug(event);
@@ -55,6 +58,7 @@ export const App: React.FC = () => {
     <Wrapper onImageFileDrop={setImageFile}>
       <Header/>
       <Canvas canvasRef={canvasRef} showUploadMessage={imageFile == null} onImageFileSelected={setImageFile}/>
+      {canUseHistory && <div>History</div>}
       <Footer>
         {/*<Button>🔙</Button>*/}
         <Button onClick={() => downloadCanvasImage(canvas)}>⬇️</Button>
