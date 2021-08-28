@@ -1,6 +1,9 @@
 import { Position } from "../util/mouse_event";
 
 export const drawAllow = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
+  context.strokeStyle = color;
+  context.fillStyle = color;
+
   const angle = Math.atan2(from.y - to.y, from.x - to.x);
   const len = Math.sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
   const headLen = len * 0.25;
@@ -26,9 +29,6 @@ export const drawAllow = (context: CanvasRenderingContext2D, from: Position, to:
   });
   positions.push(from);
   // console.debug(positions.map((p) => JSON.stringify(p)).join("\n"))
-
-  context.strokeStyle = color;
-  context.fillStyle = color;
 
   context.beginPath();
   positions.forEach(({ x, y }, i) => {

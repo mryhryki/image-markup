@@ -7,6 +7,7 @@ export const Footer = styled.footer`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   line-height: 24px;
   max-height: 40px;
   padding: 8px;

@@ -12,6 +12,9 @@ import { Footer } from "./components/footer";
 import { Colors } from "./components/colors";
 import { useHistory } from "./hooks/use_history";
 import { History } from "./components/history";
+import { drawRectangleBorder } from "./drawer/rectangle_border";
+import { Drawer } from "./components/drawer";
+import { Button } from "./components/button";
 
 const Content = styled.div`
   position: absolute;
@@ -24,19 +27,13 @@ const Content = styled.div`
   display: flex;
 `;
 
-const Button = styled.button`
-  border-radius: 2px;
-  border: 1px solid silver;
-  font-size: 22px;
-  height: 24px;
-  line-height: 24px;
-  min-width: 24px;
-  text-align: center;
+const FooterGroup = styled.div`
   margin: 0 8px;
 `;
 
 export const App: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [drawer, setDrawer] = useState<Drawer>("allow");
   const [color, setColor] = useState<string>("default");
   const { canUseHistory, histories, addHistory } = useHistory();
 
@@ -60,14 +57,21 @@ export const App: React.FC = () => {
     setMouseEventListener(canvas, (event) => {
       switch (event.type) {
         case "moved":
-          drawAllow(context, event.start, event.current, color);
+          switch (drawer) {
+            case "allow":
+              drawAllow(context, event.start, event.current, color);
+              break;
+            case "rectangle_border":
+              drawRectangleBorder(context, event.start, event.current, color);
+              break;
+          }
           addHistory(canvas);
           break;
         case "moving":
           console.debug(event);
       }
     });
-  }, [canvas, context, color]);
+  }, [canvas, context, drawer, color]);
 
   return (
     <Wrapper onImageFileDrop={setImageFile}>
@@ -82,9 +86,15 @@ export const App: React.FC = () => {
         )}
       </Content>
       <Footer>
-        {/*<Button>🔙</Button>*/}
-        <Button onClick={() => downloadCanvasImage(canvas)}>⬇️</Button>
-        <Colors color={color} setColor={setColor}/>
+        <FooterGroup>
+          <Button onClick={() => downloadCanvasImage(canvas)}>⬇️</Button>
+        </FooterGroup>
+        <FooterGroup>
+          <Drawer drawer={drawer} setDrawer={setDrawer}/>
+        </FooterGroup>
+        <FooterGroup>
+          <Colors color={color} setColor={setColor}/>
+        </FooterGroup>
       </Footer>
     </Wrapper>
   );
