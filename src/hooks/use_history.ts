@@ -30,7 +30,7 @@ export const useHistory = (): UseHistoryState => {
     console.debug(thumbnailDataUrl);
     const dataUrl = canvas.toDataURL("image/jpeg");
     const datetime = new Date().toISOString();
-    addHistoryToIndexedDb(datetime, dataUrl, thumbnailDataUrl).then(() => listHistory(20, 1)).then(setHistories);
+    addHistoryToIndexedDb(datetime, dataUrl, thumbnailDataUrl).then(() => listHistory().then(setHistories));
   };
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const useHistory = (): UseHistoryState => {
       const canUseIndexedDb = await initIndexedDb();
       setCanUseIndexedDb(canUseIndexedDb);
       if (canUseIndexedDb) {
-        setHistories(await listHistory(20, 1));
+        setHistories(await listHistory());
       }
     })();
   }, [setCanUseIndexedDb]);

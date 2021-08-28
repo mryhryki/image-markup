@@ -50,7 +50,9 @@ export const App: React.FC = () => {
     const context = canvas?.getContext("2d", { alpha: false });
     if (context == null || imageFile == null) return;
     setContext(context);
-    fileToDataUrl(imageFile).then((dataUrl) => drawImageToCanvas(dataUrl, canvas, context));
+    fileToDataUrl(imageFile)
+      .then((dataUrl) => drawImageToCanvas(dataUrl, canvas, context))
+      .then(() => addHistory(canvas));
   }, [canvas, imageFile]);
 
   useEffect(() => {
