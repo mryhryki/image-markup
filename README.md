@@ -1,2 +1,2 @@
-# image-editor
-Simple image editor.
+# image-markup
+Simple image markup web app.
