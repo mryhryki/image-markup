@@ -22,10 +22,10 @@ const Title = styled.h1`
 `;
 
 const ImageArea = styled.div`
-  bottom: 41px;
+  bottom: 40px;
   overflow: hidden;
   position: absolute;
-  top: 41px;
+  top: 40px;
   width: 100vw;
 `;
 
@@ -34,12 +34,24 @@ const Footer = styled.footer`
   bottom: 0;
   box-sizing: border-box;
   line-height: 24px;
+  max-height: 40px;
   padding: 8px;
   width: 100vw;
   position: absolute;
 `;
 
-export const App = React.FC = () => {
+const Button = styled.button`
+  border-radius: 2px;
+  border: 1px solid silver;
+  font-size: 22px;
+  height: 24px;
+  line-height: 24px;
+  min-width: 24px;
+  text-align: center;
+  margin: 0 8px;
+`;
+
+export const App: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -71,12 +83,12 @@ export const App = React.FC = () => {
     setMouseEventListener(canvas, (event) => {
       switch (event.type) {
         case "moved":
-          drawAllow(context, event.start, event.current)
-          break
+          drawAllow(context, event.start, event.current);
+          break;
         case "moving":
-          console.debug(event)
+          console.debug(event);
       }
-    })
+    });
   }, [context, imageFile]);
 
   return (
@@ -88,10 +100,23 @@ export const App = React.FC = () => {
         {imageFile == null ? (
           <ImageFileDragAndDropArea onImageFileDrop={setImageFile}/>
         ) : null}
-        <Canvas canvasRef={canvasRef} />
+        <Canvas canvasRef={canvasRef}/>
       </ImageArea>
       <Footer>
-        Footer
+        <Button /* TODO */>🔙</Button>
+        <Button
+          onClick={() => {
+            const canvas = canvasRef.current;
+            if (canvas == null) return;
+            const dataUrl = canvas.toDataURL("image/jpeg");
+            const anchor = document.createElement("a");
+            anchor.href = dataUrl;
+            anchor.download = "image.jpg";
+            anchor.click();
+          }}
+        >
+          ⬇
+          ️</Button>
       </Footer>
     </div>
   );

@@ -19,13 +19,13 @@ export const drawAllow = (context: CanvasRenderingContext2D, from: Position, to:
   context.fillStyle = "#0066ff";
 
   context.beginPath();
-  positions.forEach(({x, y}, i) => {
+  positions.forEach(({ x, y }, i) => {
     if (i === 0) {
-      context.moveTo(x, y)
+      context.moveTo(x, y);
     } else {
-      context.lineTo(x, y)
+      context.lineTo(x, y);
     }
-  })
+  });
   context.stroke();
   context.fill();
 };
