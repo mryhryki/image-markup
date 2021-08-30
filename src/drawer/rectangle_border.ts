@@ -1,9 +1,10 @@
 import { Position } from "../util/mouse_event";
+import { getLineWidth } from "../util/size";
 
 export const drawRectangleBorder = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
   context.strokeStyle = color;
   context.fillStyle = color;
-  context.lineWidth = 4;
+  context.lineWidth = getLineWidth(context);
   context.lineCap = "round";
   context.lineJoin = "round";
 

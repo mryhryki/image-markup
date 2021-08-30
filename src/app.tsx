@@ -16,7 +16,6 @@ import { setMouseEventListener } from "./util/mouse_event";
 import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
-import { getFontSize } from "./util/size";
 
 const Content = styled.div`
   position: absolute;
@@ -38,14 +37,14 @@ const FooterGroup = styled.div`
 
 export const App: React.FC = () => {
   const [drawerType, setDrawerType] = useState<DrawerType>("arrow");
-  const [color, setColor] = useState<string>("default");
+  const [color, setColor] = useState("default");
+  const [text, setText] = useState("");
 
   const { canvasRef, context, rendered, render, reRender, update } = useCanvas();
   const { canUseHistory, histories, addHistory } = useHistory();
 
   useEffect(() => {
     setMouseEventListener(context, (event) => {
-      const fontSize = getFontSize(context.canvas.height, context.canvas.width);
       reRender();
       switch (event.type) {
         case "moved":
@@ -57,7 +56,7 @@ export const App: React.FC = () => {
               drawRectangleBorder(context, event.start, event.current, color);
               break;
             case "text":
-              drawText(context, event.current, color, fontSize);
+              drawText(context, event.current, text, color);
               break;
             default:
               return;
@@ -74,13 +73,13 @@ export const App: React.FC = () => {
               drawRectangleBorder(context, event.start, event.current, color);
               break;
             case "text":
-              drawText(context, event.current, color, fontSize);
+              drawText(context, event.current, text, color);
               break;
           }
           break;
       }
     });
-  }, [context, reRender, drawerType, color, addHistory]);
+  }, [context, reRender, drawerType, text, color, addHistory]);
 
   const onImageFileSelected = (imageFile: File): void => {
     fileToDataUrl(imageFile)
@@ -113,7 +112,7 @@ export const App: React.FC = () => {
           />
         </FooterGroup>
         <FooterGroup>
-          <DrawerSelector drawer={drawerType} setDrawer={setDrawerType}/>
+          <DrawerSelector drawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text}/>
         </FooterGroup>
         <FooterGroup>
           <ColorSelector color={color} setColor={setColor}/>
