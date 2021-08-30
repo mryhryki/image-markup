@@ -12,7 +12,7 @@ export const getFontSize = (context: CanvasRenderingContext2D): number => {
 export const getLineWidth = (context: CanvasRenderingContext2D): number => {
   const min = Math.min(context.canvas.height, context.canvas.width);
   const lineWidth = Math.round(Math.cbrt(min));
-  console.debug(lineWidth)
+  console.debug(lineWidth);
   if (lineWidth < 4) {
     return 4;
   } else if (lineWidth > 20) {

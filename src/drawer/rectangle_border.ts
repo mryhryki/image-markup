@@ -15,7 +15,6 @@ export const drawRectangleBorder = (context: CanvasRenderingContext2D, from: Pos
   positions.push({ x: to.x, y: to.y });
   positions.push({ x: to.x, y: from.y });
   positions.push(from);
-  // console.debug(positions.map((p) => JSON.stringify(p)).join("\n"))
 
   context.beginPath();
   positions.forEach(({ x, y }, i) => {

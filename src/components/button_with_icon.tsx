@@ -24,19 +24,6 @@ export const Button = styled.button`
   &.selected {
     border: 2px solid red;
   }
-
-  //&.selected:after {
-  //  border-color: #888;
-  //  border-style: solid;
-  //  border-width: 0 0 4px 4px;
-  //  content: " ";
-  //  height: 6px;
-  //  left: 4px;
-  //  position: absolute;
-  //  top: 5px;
-  //  transform: rotate(-45deg);
-  //  width: 12px;
-  //}
 `;
 
 const Image = styled.img`
@@ -53,7 +40,7 @@ const getImage = (iconName: string): string => {
     case "download":
       return DownloadIcon;
     case "text":
-      return TextIcon
+      return TextIcon;
   }
   return "";
 };

@@ -3,11 +3,11 @@ export const fileToDataUrl = (file: File): Promise<string> => new Promise((resol
   fileReader.addEventListener("load", (event) => {
     const dataUrl = event.target?.result;
     if (typeof dataUrl === "string") {
-      resolve(dataUrl)
+      resolve(dataUrl);
     } else {
-      reject("Generate data URL failed.")
+      reject("Generate data URL failed.");
     }
   });
-  fileReader.addEventListener("error", reject)
+  fileReader.addEventListener("error", reject);
   fileReader.readAsDataURL(file);
-})
+});

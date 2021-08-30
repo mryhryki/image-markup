@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ButtonWithIcon } from "./components/button_with_icon";
 import { Canvas } from "./components/canvas";
 import { ColorSelector } from "./components/color_selector";
-import { DrawerType, DrawerSelector } from "./components/drawer_selector";
+import { DrawerSelector, DrawerType } from "./components/drawer_selector";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { History } from "./components/history";

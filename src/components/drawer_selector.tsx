@@ -37,26 +37,25 @@ export const DrawerSelector: React.FC<Props> = (props) => {
 
   return (
     <>
-      {Drawers.map((d) => {
-        const selected = d === drawer;
-        if (d === "text" && selected) {
-          return (
-            <>
-              <ButtonWithIcon alt={d} iconName={drawer} onClick={() => setDrawer(d)} selected={selected}/>
-              <TextInput value={text} onChange={(event) => setText(event.target.value)} placeholder="Annotation Text"/>
-            </>
-          );
-        }
-        return (
-          <ButtonWithIcon
-            key={d}
-            alt={drawer}
-            iconName={d}
-            onClick={() => setDrawer(d)}
-            selected={selected}
-          />
-        );
-      })}
+      {Drawers.map((d) => (
+        <ButtonWithIcon
+          alt={drawer}
+          iconName={d}
+          key={d}
+          onClick={() => setDrawer(d)}
+          selected={d === drawer}
+        />
+      ))}
+      <TextInput
+        onChange={(event) => {
+          if (drawer !== "text") {
+            setDrawer("text");
+          }
+          setText(event.target.value);
+        }}
+        placeholder="draw text"
+        value={text}
+      />
     </>
   );
 };

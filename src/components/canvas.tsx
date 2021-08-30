@@ -49,7 +49,7 @@ export const Canvas: React.FC<Props> = (props) => {
     <CanvasWrapper>
       {showUploadMessage && (
         <Message>
-          <p>Drop image file here!</p>
+          <p>Drop or paste image file here!</p>
           <p>
             or{" "}
             <UploadImageFileButton onClick={() => selectImage(onImageFileSelected)}>

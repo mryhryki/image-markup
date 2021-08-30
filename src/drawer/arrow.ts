@@ -6,26 +6,26 @@ export const drawArrow = (context: CanvasRenderingContext2D, from: Position, to:
 
   const angle = Math.atan2(from.y - to.y, from.x - to.x);
   const len = Math.sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
-  const headLen = len * 0.25;
+  const headLen = len * 0.35;
 
   const positions: Position[] = [];
   positions.push(from);
   positions.push({
-    x: from.x - headLen * Math.cos(angle - Math.PI / 6),
-    y: from.y - headLen * Math.sin(angle - Math.PI / 6),
+    x: from.x - headLen * Math.cos(angle - Math.PI / 6.5),
+    y: from.y - headLen * Math.sin(angle - Math.PI / 6.5),
   });
   positions.push({
-    x: from.x - headLen * Math.cos(angle - Math.PI / 14),
-    y: from.y - headLen * Math.sin(angle - Math.PI / 14),
+    x: from.x - (headLen * 0.92) * Math.cos(angle - Math.PI / 13),
+    y: from.y - (headLen * 0.92) * Math.sin(angle - Math.PI / 13),
   });
   positions.push(to);
   positions.push({
-    x: from.x - headLen * Math.cos(angle + Math.PI / 14),
-    y: from.y - headLen * Math.sin(angle + Math.PI / 14),
+    x: from.x - (headLen * 0.92) * Math.cos(angle + Math.PI / 13),
+    y: from.y - (headLen * 0.92) * Math.sin(angle + Math.PI / 13),
   });
   positions.push({
-    x: from.x - headLen * Math.cos(angle + Math.PI / 6),
-    y: from.y - headLen * Math.sin(angle + Math.PI / 6),
+    x: from.x - headLen * Math.cos(angle + Math.PI / 6.5),
+    y: from.y - headLen * Math.sin(angle + Math.PI / 6.5),
   });
   positions.push(from);
   // console.debug(positions.map((p) => JSON.stringify(p)).join("\n"))
