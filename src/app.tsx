@@ -1,19 +1,20 @@
-import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { Canvas } from "./components/canvas";
-import { drawArrow } from "./drawer/arrow";
-import { setMouseEventListener } from "./util/mouse_event";
-import { downloadCanvasImage } from "./util/download_canvas_image";
-import { Wrapper } from "./components/wrapper";
-import { Header } from "./components/header";
-import { Footer } from "./components/footer";
-import { Colors } from "./components/colors";
-import { useHistory } from "./hooks/use_history";
-import { History } from "./components/history";
-import { drawRectangleBorder } from "./drawer/rectangle_border";
-import { DrawerSelector, DrawerType } from "./components/drawerType";
+import styled from "styled-components";
 import { ButtonWithIcon } from "./components/button_with_icon";
+import { Canvas } from "./components/canvas";
+import { ColorSelector } from "./components/color_selector";
+import { DrawerType, DrawerSelector } from "./components/drawer_selector";
+import { Footer } from "./components/footer";
+import { Header } from "./components/header";
+import { History } from "./components/history";
+import { Wrapper } from "./components/wrapper";
+import { downloadCanvasImage } from "./util/download_canvas_image";
+import { drawArrow } from "./drawer/arrow";
+import { drawRectangleBorder } from "./drawer/rectangle_border";
+import { fileToDataUrl } from "./util/file_to_data_url";
+import { setMouseEventListener } from "./util/mouse_event";
 import { useCanvas } from "./hooks/use_canvas";
+import { useHistory } from "./hooks/use_history";
 
 const Content = styled.div`
   position: absolute;
@@ -48,12 +49,12 @@ export const App: React.FC = () => {
             case "arrow":
               drawArrow(context, event.start, event.current, color);
               update();
-              addHistory(context);
+              addHistory(context.canvas.toDataURL("image/jpeg"));
               break;
             case "rectangle_border":
               drawRectangleBorder(context, event.start, event.current, color);
               update();
-              addHistory(context);
+              addHistory(context.canvas.toDataURL("image/jpeg"));
               break;
           }
           break;
@@ -75,11 +76,20 @@ export const App: React.FC = () => {
     });
   }, [context, reRender, drawerType, color, addHistory]);
 
+  const onImageFileSelected = (imageFile: File): void => {
+    fileToDataUrl(imageFile)
+      .then((imageDataUrl) => render(imageDataUrl));
+  };
+
   return (
-    <Wrapper onImageFileDrop={render}>
+    <Wrapper onImageFileDrop={onImageFileSelected}>
       <Header/>
       <Content>
-        <Canvas canvasRef={canvasRef} showUploadMessage={!rendered} onImageFileSelected={render}/>
+        <Canvas
+          canvasRef={canvasRef}
+          showUploadMessage={!rendered}
+          onImageFileSelected={onImageFileSelected}
+        />
         {canUseHistory && (
           <History histories={histories} onSelect={({ dataUrl }) => render(dataUrl)}/>
         )}
@@ -97,7 +107,7 @@ export const App: React.FC = () => {
           <DrawerSelector drawer={drawerType} setDrawer={setDrawerType}/>
         </FooterGroup>
         <FooterGroup>
-          <Colors color={color} setColor={setColor}/>
+          <ColorSelector color={color} setColor={setColor}/>
         </FooterGroup>
       </Footer>
     </Wrapper>

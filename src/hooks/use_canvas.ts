@@ -1,5 +1,4 @@
 import { RefObject, useEffect, useRef, useState } from "react";
-import { fileToDataUrl } from "../util/file_to_data_url";
 import { buildImageToCanvasRenderer } from "../util/render_image_to_canvas";
 
 const DummyCanvas: HTMLCanvasElement = document.createElement("canvas");
@@ -12,13 +11,13 @@ type ReRenderFunc = () => void
 interface UseCanvasState {
   canvasRef: RefObject<HTMLCanvasElement>;
   context: CanvasRenderingContext2D;
-  rendered: boolean;
-  render: (image: File | string) => Promise<void>;
   reRender: ReRenderFunc;
+  render: (imageDataUrl: string) => Promise<void>;
+  rendered: boolean;
   update: () => Promise<void>;
 }
 
-export const useCanvas = () => {
+export const useCanvas = (): UseCanvasState => {
   const canvasRef = useRef(DummyCanvas);
   const [rendered, setRendered] = useState(false);
   const [context, setContext] = useState(DummyContext);
@@ -30,12 +29,11 @@ export const useCanvas = () => {
     setReRender(() => reRender);
   };
 
-  const render = async (image: File | string): Promise<void> => {
+  const render = async (imageDataUrl: string): Promise<void> => {
     if (!rendered) {
       setRendered(true);
     }
-    const dataUrl = image instanceof File ? await fileToDataUrl(image) : image;
-    const reRender = await buildImageToCanvasRenderer(dataUrl, context);
+    const reRender = await buildImageToCanvasRenderer(imageDataUrl, context);
     reRender();
     setReRender(() => reRender);
   };

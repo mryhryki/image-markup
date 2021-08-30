@@ -30,7 +30,7 @@ export const ButtonColor = styled.button`
 `;
 
 
-const colors: string[] = [
+const color_selector: string[] = [
   "#ff0000",
   "#EDAD0B",
   "#00993D",
@@ -42,18 +42,18 @@ interface Props {
   setColor: (color: string) => void;
 }
 
-export const Colors: React.FC<Props> = (props) => {
+export const ColorSelector: React.FC<Props> = (props) => {
   const { color, setColor } = props;
 
   useEffect(() => {
-    if (!colors.includes(color)) {
-      setColor(colors[0]);
+    if (!color_selector.includes(color)) {
+      setColor(color_selector[0]);
     }
   }, [color]);
 
   return (
     <>
-      {colors.map((c) => (
+      {color_selector.map((c) => (
         <ButtonColor
           key={c}
           style={{ backgroundColor: c }}

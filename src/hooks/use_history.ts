@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { addHistory as addHistoryToIndexedDb, History, initIndexedDb, listHistory } from "../util/history";
+import { getImage } from "../util/render_image_to_canvas";
 
 interface UseHistoryState {
-  addHistory: (context: CanvasRenderingContext2D) => void;
+  addHistory: (imageDataUrl: string) => Promise<void>;
   canUseHistory: boolean;
   histories: History[];
 }
@@ -11,26 +12,26 @@ export const useHistory = (): UseHistoryState => {
   const [canUseIndexedDb, setCanUseIndexedDb] = useState(false);
   const [histories, setHistories] = useState<History[]>([]);
 
-  const addHistory = (context: CanvasRenderingContext2D): void => {
+  const addHistory = async (imageDataUrl: string): Promise<void> => {
     if (!canUseIndexedDb) return;
-    const canvas = context.canvas
 
-    const tempCanvas = document.createElement("canvas");
-    const tempContext = tempCanvas.getContext("2d", { alpha: false });
-    if (tempContext == null) return;
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d", { alpha: false });
+    if (context == null) return;
 
-    const baseLen = canvas.width > canvas.height ? canvas.width : canvas.height;
+    const image = await getImage(imageDataUrl);
+    const baseLen = image.width > image.height ? image.width : image.height;
     const rate = 192 / baseLen;
-    const width = canvas.width * rate;
-    const height = canvas.height * rate;
-    tempCanvas.width = width;
-    tempCanvas.height = height;
-    tempContext.drawImage(canvas, 0, 0, width, height);
+    const width = image.width * rate;
+    const height = image.height * rate;
 
-    const thumbnailDataUrl = tempCanvas.toDataURL("image/jpeg");
-    const dataUrl = canvas.toDataURL("image/jpeg");
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(canvas, 0, 0, width, height);
+    const thumbnailDataUrl = canvas.toDataURL("image/jpeg");
+
     const datetime = new Date().toISOString();
-    addHistoryToIndexedDb(datetime, dataUrl, thumbnailDataUrl).then(() => listHistory().then(setHistories));
+    addHistoryToIndexedDb(datetime, imageDataUrl, thumbnailDataUrl).then(() => listHistory().then(setHistories));
   };
 
   useEffect(() => {
