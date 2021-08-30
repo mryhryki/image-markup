@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { addHistory as addHistoryToIndexedDb, History, initIndexedDb, listHistory } from "../util/history";
 
 interface UseHistoryState {
-  addHistory: (canvas: HTMLCanvasElement) => void;
+  addHistory: (context: CanvasRenderingContext2D) => void;
   canUseHistory: boolean;
   histories: History[];
 }
@@ -11,8 +11,9 @@ export const useHistory = (): UseHistoryState => {
   const [canUseIndexedDb, setCanUseIndexedDb] = useState(false);
   const [histories, setHistories] = useState<History[]>([]);
 
-  const addHistory = (canvas: HTMLCanvasElement): void => {
+  const addHistory = (context: CanvasRenderingContext2D): void => {
     if (!canUseIndexedDb) return;
+    const canvas = context.canvas
 
     const tempCanvas = document.createElement("canvas");
     const tempContext = tempCanvas.getContext("2d", { alpha: false });

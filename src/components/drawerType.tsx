@@ -1,24 +1,18 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { ButtonWithIcon } from "./button_with_icon";
 
-export type Drawer = "arrow" | "rectangle_border"
-const Drawers: Drawer[] = [
+export type DrawerType = "arrow" | "rectangle_border"
+const Drawers: DrawerType[] = [
   "arrow",
   "rectangle_border",
 ];
 
-const Emoji = {
-  arrow: "↙️",
-  rectangle_border: "🔳️",
-};
-
 interface Props {
-  drawer: Drawer;
-  setDrawer: (drawer: Drawer) => void;
+  drawer: DrawerType;
+  setDrawer: (drawer: DrawerType) => void;
 }
 
-export const Drawer: React.FC<Props> = (props) => {
+export const DrawerSelector: React.FC<Props> = (props) => {
   const { drawer, setDrawer } = props;
 
   useEffect(() => {
