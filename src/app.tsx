@@ -56,6 +56,7 @@ export const App: React.FC = () => {
               drawRectangleBorder(context, event.start, event.current, color);
               break;
             case "text":
+              if (text.trim().length === 0) return;
               drawText(context, event.current, text, color);
               break;
             default:

@@ -34,6 +34,15 @@ export const Wrapper: React.FC<Props> = (props) => {
         }
         onImageFileDrop(file);
       }}
+      onPaste={(event) => {
+        const file = event.clipboardData.files.item(0);
+        if (file == null) {
+          return;
+        } else if (!PermitFileType.includes(file.type)) {
+          return;
+        }
+        onImageFileDrop(file);
+      }}
     >
       {children}
     </StyledWrapper>
