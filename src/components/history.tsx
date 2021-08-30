@@ -62,7 +62,7 @@ export const History: React.FC<Props> = (props) => {
         const time = `${pad(datetime.getHours())}:${pad(datetime.getMinutes())}:${pad(datetime.getSeconds())}`;
 
         return (
-          <HistoryWrapper onClick={() => onSelect(history)}>
+          <HistoryWrapper key={history.datetime} onClick={() => onSelect(history)}>
             <Thumbnail src={history.thumbnailDataUrl}/>
             <DateTimeWrapper>
               <TimeText>{time}</TimeText>

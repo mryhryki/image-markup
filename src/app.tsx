@@ -71,7 +71,7 @@ export const App: React.FC = () => {
     setRendered(true);
     setContext(context);
     fileToDataUrl(imageFile)
-      .then((dataUrl) => drawImageToCanvas(dataUrl, canvas, context))
+      .then((dataUrl) => drawImageToCanvas(dataUrl, context))
       .then(() => addHistory(canvas));
   };
 
@@ -87,7 +87,7 @@ export const App: React.FC = () => {
               const ctx = context ?? canvas.getContext("2d", { alpha: false });
               if (ctx == null) return;
               setContext(ctx);
-              drawImageToCanvas(dataUrl, canvas, ctx)
+              drawImageToCanvas(dataUrl, ctx)
                 .then(() => setRendered(true));
             }}
           />

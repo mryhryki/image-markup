@@ -30,7 +30,7 @@ export const Drawer: React.FC<Props> = (props) => {
   return (
     <>
       {Drawers.map((d) => (
-        <ButtonWithIcon alt={drawer} iconName={d} onClick={() => setDrawer(d)} selected={d === drawer}/>
+        <ButtonWithIcon key={d} alt={drawer} iconName={d} onClick={() => setDrawer(d)} selected={d === drawer}/>
       ))}
     </>
   );
