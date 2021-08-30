@@ -15,6 +15,8 @@ import { fileToDataUrl } from "./util/file_to_data_url";
 import { setMouseEventListener } from "./util/mouse_event";
 import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
+import { drawText } from "./drawer/text";
+import { getFontSize } from "./util/size";
 
 const Content = styled.div`
   position: absolute;
@@ -43,23 +45,27 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     setMouseEventListener(context, (event) => {
+      const fontSize = getFontSize(context.canvas.height, context.canvas.width);
+      reRender();
       switch (event.type) {
         case "moved":
           switch (drawerType) {
             case "arrow":
               drawArrow(context, event.start, event.current, color);
-              update();
-              addHistory(context.canvas.toDataURL("image/jpeg"));
               break;
             case "rectangle_border":
               drawRectangleBorder(context, event.start, event.current, color);
-              update();
-              addHistory(context.canvas.toDataURL("image/jpeg"));
               break;
+            case "text":
+              drawText(context, event.current, color, fontSize);
+              break;
+            default:
+              return;
           }
+          update();
+          addHistory(context.canvas.toDataURL("image/png"));
           break;
         case "moving":
-          reRender();
           switch (drawerType) {
             case "arrow":
               drawArrow(context, event.start, event.current, color);
@@ -67,10 +73,10 @@ export const App: React.FC = () => {
             case "rectangle_border":
               drawRectangleBorder(context, event.start, event.current, color);
               break;
+            case "text":
+              drawText(context, event.current, color, fontSize);
+              break;
           }
-          break;
-        case "interruption":
-          reRender();
           break;
       }
     });
@@ -78,7 +84,10 @@ export const App: React.FC = () => {
 
   const onImageFileSelected = (imageFile: File): void => {
     fileToDataUrl(imageFile)
-      .then((imageDataUrl) => render(imageDataUrl));
+      .then((imageDataUrl) => {
+        render(imageDataUrl);
+        addHistory(imageDataUrl);
+      });
   };
 
   return (

@@ -1,4 +1,4 @@
-export const PermitFileType = ["image/jpeg", "image/png"];
+export const PermitFileType = ["image/png", "image/png"];
 
 export const selectImage = (onChange: (file: File) => void): void => {
   const input: HTMLInputElement = document.createElement("input");

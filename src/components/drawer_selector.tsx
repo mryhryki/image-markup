@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { ButtonWithIcon } from "./button_with_icon";
 
-export type DrawerType = "arrow" | "rectangle_border"
+export type DrawerType = "arrow" | "rectangle_border" | "text"
 const Drawers: DrawerType[] = [
   "arrow",
   "rectangle_border",
+  "text"
 ];
 
 interface Props {

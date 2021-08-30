@@ -4,7 +4,7 @@ export interface Position {
 }
 
 interface CustomMouseEvent {
-  type: "start" | "moving" | "moved" | "interruption";
+  type: "start" | "moving" | "moved";
   start: Position;
   current: Position;
 }
@@ -37,7 +37,8 @@ export const setMouseEventListener = (context: CanvasRenderingContext2D, listene
     listener({ type: "moved", start: startPosition, current: getPosition(event) });
   };
   canvas.onmouseleave = (event) => {
+    if (!moving) return;
     moving = false;
-    listener({ type: "interruption", start: startPosition, current: getPosition(event) });
+    listener({ type: "moved", start: startPosition, current: getPosition(event) });
   };
 };

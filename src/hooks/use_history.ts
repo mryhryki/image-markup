@@ -27,8 +27,8 @@ export const useHistory = (): UseHistoryState => {
 
     canvas.width = width;
     canvas.height = height;
-    context.drawImage(canvas, 0, 0, width, height);
-    const thumbnailDataUrl = canvas.toDataURL("image/jpeg");
+    context.drawImage(image, 0, 0, width, height);
+    const thumbnailDataUrl = canvas.toDataURL("image/png");
 
     const datetime = new Date().toISOString();
     addHistoryToIndexedDb(datetime, imageDataUrl, thumbnailDataUrl).then(() => listHistory().then(setHistories));

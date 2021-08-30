@@ -6,6 +6,8 @@ import ArrowIcon from "../icon/arrow.jpeg";
 import RectangleBorderIcon from "../icon/rectangle_border.jpeg";
 // @ts-ignore
 import DownloadIcon from "../icon/download.jpeg";
+// @ts-ignore
+import TextIcon from "../icon/text.jpeg";
 
 export const Button = styled.button`
   border-radius: 2px;
@@ -50,6 +52,8 @@ const getImage = (iconName: string): string => {
       return RectangleBorderIcon;
     case "download":
       return DownloadIcon;
+    case "text":
+      return TextIcon
   }
   return "";
 };
