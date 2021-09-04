@@ -16,6 +16,7 @@ import { setMouseEventListener } from "./util/mouse_event";
 import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
+import { drawMask } from "./drawer/mask";
 
 const Content = styled.div`
   position: absolute;
@@ -55,6 +56,9 @@ export const App: React.FC = () => {
             case "rectangle_border":
               drawRectangleBorder(context, event.start, event.current, color);
               break;
+            case "mask":
+              drawMask(context, event.start, event.current);
+              break;
             case "text":
               if (text.trim().length === 0) return;
               drawText(context, event.current, text, color);
@@ -72,6 +76,9 @@ export const App: React.FC = () => {
               break;
             case "rectangle_border":
               drawRectangleBorder(context, event.start, event.current, color);
+              break;
+            case "mask":
+              drawMask(context, event.start, event.current);
               break;
             case "text":
               drawText(context, event.current, text, color);

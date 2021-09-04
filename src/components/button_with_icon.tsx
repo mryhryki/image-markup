@@ -7,6 +7,8 @@ import RectangleBorderIcon from "../icon/rectangle_border.jpeg";
 // @ts-ignore
 import DownloadIcon from "../icon/download.jpeg";
 // @ts-ignore
+import MaskIcon from "../icon/mask.jpeg";
+// @ts-ignore
 import TextIcon from "../icon/text.jpeg";
 
 export const Button = styled.button`
@@ -39,6 +41,8 @@ const getImage = (iconName: string): string => {
       return RectangleBorderIcon;
     case "download":
       return DownloadIcon;
+    case "mask":
+      return MaskIcon;
     case "text":
       return TextIcon;
   }
