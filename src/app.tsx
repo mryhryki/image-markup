@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { ButtonWithIcon } from "./components/button_with_icon";
 import { Canvas } from "./components/canvas";
@@ -17,6 +17,7 @@ import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
 import { drawMask } from "./drawer/mask";
+import { useStorage } from "./hooks/use_storage";
 
 const Content = styled.div`
   position: absolute;
@@ -37,9 +38,9 @@ const FooterGroup = styled.div`
 `;
 
 export const App: React.FC = () => {
-  const [drawerType, setDrawerType] = useState<DrawerType>("arrow");
-  const [color, setColor] = useState("default");
-  const [text, setText] = useState("");
+  const [drawerType, setDrawerType] = useStorage<DrawerType>("drawer_type", "arrow");
+  const [color, setColor] = useStorage<string>("color", "default");
+  const [text, setText] = useStorage<string>("text", "");
 
   const { canvasRef, context, rendered, render, reRender, update } = useCanvas();
   const { canUseHistory, histories, addHistory } = useHistory();
