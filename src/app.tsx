@@ -12,7 +12,7 @@ import { downloadCanvasImage } from "./util/download_canvas_image";
 import { drawArrow } from "./drawer/arrow";
 import { drawRectangleBorder } from "./drawer/rectangle_border";
 import { fileToDataUrl } from "./util/file_to_data_url";
-import { setMouseEventListener } from "./util/mouse_event";
+import { setUserActionEventListener } from "./util/user_action_event";
 import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
@@ -46,9 +46,28 @@ export const App: React.FC = () => {
   const { canUseHistory, histories, addHistory } = useHistory();
 
   useEffect(() => {
-    setMouseEventListener(context, (event) => {
+    setUserActionEventListener(context, (event) => {
       reRender();
       switch (event.type) {
+        case "start":
+          // Do nothing
+          break;
+        case "moving":
+          switch (drawerType) {
+            case "arrow":
+              drawArrow(context, event.start, event.current, color);
+              break;
+            case "rectangle_border":
+              drawRectangleBorder(context, event.start, event.current, color);
+              break;
+            case "mask":
+              drawMask(context, event.start, event.current);
+              break;
+            case "text":
+              drawText(context, event.current, text, color);
+              break;
+          }
+          break;
         case "moved":
           switch (drawerType) {
             case "arrow":
@@ -70,21 +89,8 @@ export const App: React.FC = () => {
           update();
           addHistory(context.canvas.toDataURL("image/png"));
           break;
-        case "moving":
-          switch (drawerType) {
-            case "arrow":
-              drawArrow(context, event.start, event.current, color);
-              break;
-            case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, color);
-              break;
-            case "mask":
-              drawMask(context, event.start, event.current);
-              break;
-            case "text":
-              drawText(context, event.current, text, color);
-              break;
-          }
+        case "canceled":
+          // Do nothing
           break;
       }
     });

@@ -3,8 +3,10 @@ export interface Position {
   y: number;
 }
 
+const DummyPosition: Position = { x: 0, y: 0 };
+
 interface CustomMouseEvent {
-  type: "start" | "moving" | "moved";
+  type: "start" | "moving" | "moved" | "canceled";
   start: Position;
   current: Position;
 }
@@ -17,7 +19,7 @@ const getPosition = (event: MouseEvent): Position => {
   return { x, y };
 };
 
-export const setMouseEventListener = (context: CanvasRenderingContext2D, listener: (event: CustomMouseEvent) => void): void => {
+export const setUserActionEventListener = (context: CanvasRenderingContext2D, listener: (event: CustomMouseEvent) => void): void => {
   const canvas = context.canvas;
   let moving: boolean = false;
   let startPosition: Position = { x: 0, y: 0 };
@@ -36,9 +38,13 @@ export const setMouseEventListener = (context: CanvasRenderingContext2D, listene
     moving = false;
     listener({ type: "moved", start: startPosition, current: getPosition(event) });
   };
-  canvas.onmouseleave = (event) => {
+  canvas.onmouseleave = () => {
     if (!moving) return;
     moving = false;
-    listener({ type: "moved", start: startPosition, current: getPosition(event) });
+    listener({ type: "canceled", start: DummyPosition, current: DummyPosition });
+  };
+  canvas.oncontextmenu = () => {
+    moving = false;
+    listener({ type: "canceled", start: DummyPosition, current: DummyPosition });
   };
 };
