@@ -15,5 +15,5 @@ export const trim = async (context: CanvasRenderingContext2D, from: Position, to
 
   canvas.width = width;
   canvas.height = height;
-  context.drawImage(image, -left, -top, width, height);
+  context.drawImage(image, left, top, width, height, 0, 0, width, height);
 };

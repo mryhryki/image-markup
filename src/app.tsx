@@ -47,7 +47,7 @@ export const App: React.FC = () => {
   const { canUseHistory, histories, addHistory } = useHistory();
 
   useEffect(() => {
-    setUserActionEventListener(context, (event) => {
+    setUserActionEventListener(context, async (event): Promise<void> => {
       reRender();
       switch (event.type) {
         case "start":
@@ -92,13 +92,13 @@ export const App: React.FC = () => {
               drawText(context, event.current, text, color);
               break;
             case "trim":
-              trim(context, event.start, event.current);
+              await trim(context, event.start, event.current);
               break;
             default:
               return;
           }
-          update()
-          addHistory(context.canvas.toDataURL("image/png"));
+          await update()
+          await addHistory(context.canvas.toDataURL("image/png"));
           break;
         case "canceled":
           // Do nothing
@@ -108,11 +108,11 @@ export const App: React.FC = () => {
   }, [context, reRender, drawerType, text, color, addHistory]);
 
   const onImageFileSelected = (imageFile: File): void => {
-    fileToDataUrl(imageFile)
-      .then((imageDataUrl) => {
-        render(imageDataUrl);
-        addHistory(imageDataUrl);
-      });
+    (async() => {
+      const imageDataUrl = await fileToDataUrl(imageFile)
+      await render(imageDataUrl);
+      await addHistory(imageDataUrl);
+    })()
   };
 
   return (
