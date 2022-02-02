@@ -1,5 +1,5 @@
-import { Position } from "../util/mouse_event";
 import { getFontSize } from "../util/size";
+import { Position } from "../util/user_action_event";
 
 export const drawText = (context: CanvasRenderingContext2D, position: Position, text: string, color: string): void => {
   if (text.trim().length === 0) return;

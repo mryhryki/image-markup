@@ -1,5 +1,5 @@
-import { Position } from "../util/mouse_event";
 import { canvasRGB } from "stackblur-canvas";
+import { Position } from "../util/user_action_event";
 
 export const drawMask = (context: CanvasRenderingContext2D, from: Position, to: Position): void => {
   const x = Math.min(from.x, to.x);

@@ -18,6 +18,7 @@ import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
 import { drawMask } from "./drawer/mask";
 import { useStorage } from "./hooks/use_storage";
+import { trim } from "./drawer/trim";
 
 const Content = styled.div`
   position: absolute;
@@ -58,13 +59,20 @@ export const App: React.FC = () => {
               drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, color);
+              drawRectangleBorder(context, event.start, event.current, { color });
               break;
             case "mask":
               drawMask(context, event.start, event.current);
               break;
             case "text":
               drawText(context, event.current, text, color);
+              break;
+            case "trim":
+              drawRectangleBorder(context, event.start, event.current, {
+                color: "#999999",
+                lineWidth: 2,
+                lineDashSegments: [5, 5],
+              });
               break;
           }
           break;
@@ -74,7 +82,7 @@ export const App: React.FC = () => {
               drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, color);
+              drawRectangleBorder(context, event.start, event.current, { color });
               break;
             case "mask":
               drawMask(context, event.start, event.current);
@@ -83,10 +91,13 @@ export const App: React.FC = () => {
               if (text.trim().length === 0) return;
               drawText(context, event.current, text, color);
               break;
+            case "trim":
+              trim(context, event.start, event.current);
+              break;
             default:
               return;
           }
-          update();
+          update()
           addHistory(context.canvas.toDataURL("image/png"));
           break;
         case "canceled":
