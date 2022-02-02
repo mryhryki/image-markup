@@ -10,6 +10,8 @@ import DownloadIcon from "../icon/download.jpeg";
 import MaskIcon from "../icon/mask.jpeg";
 // @ts-ignore
 import TextIcon from "../icon/text.jpeg";
+// @ts-ignore
+import TrimIcon from "../icon/trim.jpeg";
 
 export const Button = styled.button`
   border-radius: 2px;
@@ -45,6 +47,8 @@ const getImage = (iconName: string): string => {
       return MaskIcon;
     case "text":
       return TextIcon;
+    case "trim":
+      return TrimIcon;
   }
   return "";
 };

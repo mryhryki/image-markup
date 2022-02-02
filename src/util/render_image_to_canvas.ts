@@ -7,12 +7,11 @@ export const buildImageToCanvasRenderer = async (
   const image = await getImage(imageDataUrl);
   context.canvas.width = image.width;
   context.canvas.height = image.height;
-  const drawer: Drawer = () => {
+  return () => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.drawImage(image, 0, 0);
     return context;
   };
-  return drawer;
 };
 
 export const getImage = async (imageDataUrl: string): Promise<HTMLImageElement> => new Promise((resolve, reject) => {

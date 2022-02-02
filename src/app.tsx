@@ -18,6 +18,7 @@ import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
 import { drawMask } from "./drawer/mask";
 import { useStorage } from "./hooks/use_storage";
+import { trim } from "./drawer/trim";
 
 const Content = styled.div`
   position: absolute;
@@ -46,7 +47,7 @@ export const App: React.FC = () => {
   const { canUseHistory, histories, addHistory } = useHistory();
 
   useEffect(() => {
-    setUserActionEventListener(context, (event) => {
+    setUserActionEventListener(context, async (event): Promise<void> => {
       reRender();
       switch (event.type) {
         case "start":
@@ -58,13 +59,20 @@ export const App: React.FC = () => {
               drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, color);
+              drawRectangleBorder(context, event.start, event.current, { color });
               break;
             case "mask":
               drawMask(context, event.start, event.current);
               break;
             case "text":
               drawText(context, event.current, text, color);
+              break;
+            case "trim":
+              drawRectangleBorder(context, event.start, event.current, {
+                color: "#999999",
+                lineWidth: 2,
+                lineDashSegments: [5, 5],
+              });
               break;
           }
           break;
@@ -74,7 +82,7 @@ export const App: React.FC = () => {
               drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, color);
+              drawRectangleBorder(context, event.start, event.current, { color });
               break;
             case "mask":
               drawMask(context, event.start, event.current);
@@ -83,11 +91,14 @@ export const App: React.FC = () => {
               if (text.trim().length === 0) return;
               drawText(context, event.current, text, color);
               break;
+            case "trim":
+              await trim(context, event.start, event.current);
+              break;
             default:
               return;
           }
-          update();
-          addHistory(context.canvas.toDataURL("image/png"));
+          await update()
+          await addHistory(context.canvas.toDataURL("image/png"));
           break;
         case "canceled":
           // Do nothing
@@ -97,11 +108,11 @@ export const App: React.FC = () => {
   }, [context, reRender, drawerType, text, color, addHistory]);
 
   const onImageFileSelected = (imageFile: File): void => {
-    fileToDataUrl(imageFile)
-      .then((imageDataUrl) => {
-        render(imageDataUrl);
-        addHistory(imageDataUrl);
-      });
+    (async() => {
+      const imageDataUrl = await fileToDataUrl(imageFile)
+      await render(imageDataUrl);
+      await addHistory(imageDataUrl);
+    })()
   };
 
   return (

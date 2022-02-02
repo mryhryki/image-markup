@@ -1,12 +1,23 @@
-import { Position } from "../util/mouse_event";
 import { getLineWidth } from "../util/size";
+import { Position } from "../util/user_action_event";
 
-export const drawRectangleBorder = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
+interface Options {
+  color: string;
+  lineWidth?: number;
+  lineDashSegments?: number[];
+}
+
+export const drawRectangleBorder = (context: CanvasRenderingContext2D, from: Position, to: Position, options: Options): void => {
+  const color = options.color;
+
   context.strokeStyle = color;
   context.fillStyle = color;
-  context.lineWidth = getLineWidth(context);
+  context.lineWidth = options.lineWidth ?? getLineWidth(context);
   context.lineCap = "round";
   context.lineJoin = "round";
+  if (options.lineDashSegments) {
+    context.setLineDash(options.lineDashSegments)
+  }
 
   const positions: Position[] = [];
   positions.push(from);

@@ -1,4 +1,4 @@
-import { Position } from "../util/mouse_event";
+import { Position } from "../util/user_action_event";
 
 export const drawArrow = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
   context.strokeStyle = color;
