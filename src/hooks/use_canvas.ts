@@ -21,7 +21,7 @@ export const useCanvas = (): UseCanvasState => {
   const canvasRef = useRef(DummyCanvas);
   const [rendered, setRendered] = useState(false);
   const [context, setContext] = useState(DummyContext);
-  const [reRender, setReRender] = useState<ReRenderFunc>(() => context);
+  const [reRender, setReRender] = useState<ReRenderFunc>(() => undefined);
 
   const update = async (): Promise<void> => {
     const reRender = await buildImageToCanvasRenderer(context.canvas.toDataURL("image/png"), context);

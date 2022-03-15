@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ButtonWithIcon } from "./components/button_with_icon";
 import { Canvas } from "./components/canvas";
@@ -21,24 +21,25 @@ import { useStorage } from "./hooks/use_storage";
 import { trim } from "./drawer/trim";
 
 const Content = styled.div`
-  position: absolute;
-  left: 4px;
-  bottom: 44px;
-  right: 4px;
-  top: 44px;
   align-items: stretch;
-  flex-direction: row;
+  bottom: 44px;
   display: flex;
+  flex-direction: row;
+  left: 4px;
+  position: absolute;
+  right: 8px;
+  top: 48px;
 `;
 
 const FooterGroup = styled.div`
-  margin: 0 8px;
+  align-items: center;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  margin: 0 8px;
 `;
 
 export const App: React.FC = () => {
+  const [ref, setRef] = useState<HTMLDivElement | null>(null);
   const [drawerType, setDrawerType] = useStorage<DrawerType>("drawer_type", "arrow");
   const [color, setColor] = useStorage<string>("color", "default");
   const [text, setText] = useStorage<string>("text", "");
@@ -47,7 +48,8 @@ export const App: React.FC = () => {
   const { canUseHistory, histories, addHistory } = useHistory();
 
   useEffect(() => {
-    setUserActionEventListener(context, async (event): Promise<void> => {
+    if (ref == null) return;
+    setUserActionEventListener(ref, context, async (event): Promise<void> => {
       reRender();
       switch (event.type) {
         case "start":
@@ -97,7 +99,7 @@ export const App: React.FC = () => {
             default:
               return;
           }
-          await update()
+          await update();
           await addHistory(context.canvas.toDataURL("image/png"));
           break;
         case "canceled":
@@ -105,20 +107,20 @@ export const App: React.FC = () => {
           break;
       }
     });
-  }, [context, reRender, drawerType, text, color, addHistory]);
+  }, [ref, context, reRender, drawerType, text, color, addHistory]);
 
   const onImageFileSelected = (imageFile: File): void => {
-    (async() => {
-      const imageDataUrl = await fileToDataUrl(imageFile)
+    (async () => {
+      const imageDataUrl = await fileToDataUrl(imageFile);
       await render(imageDataUrl);
       await addHistory(imageDataUrl);
-    })()
+    })();
   };
 
   return (
     <Wrapper onImageFileDrop={onImageFileSelected}>
       <Header/>
-      <Content>
+      <Content ref={setRef}>
         <Canvas
           canvasRef={canvasRef}
           showUploadMessage={!rendered}
