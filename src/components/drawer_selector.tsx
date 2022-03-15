@@ -7,8 +7,8 @@ const Drawers: DrawerType[] = [
   "arrow",
   "rectangle_border",
   "mask",
+  "trim",
   "text",
-  "trim"
 ];
 
 const TextInput = styled.input`
@@ -56,6 +56,7 @@ export const DrawerSelector: React.FC<Props> = (props) => {
           setText(event.target.value);
         }}
         placeholder="draw text"
+        disabled={drawer !== "text"}
         value={text}
       />
     </>

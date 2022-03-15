@@ -143,6 +143,9 @@ export const App: React.FC = () => {
         <FooterGroup>
           <ColorSelector color={color} setColor={setColor}/>
         </FooterGroup>
+        <FooterGroup>
+          <a href="https://github.com/mryhryki/image-markup" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </FooterGroup>
       </Footer>
     </Wrapper>
   );

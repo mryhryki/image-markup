@@ -38,11 +38,11 @@ export const setUserActionEventListener = (context: CanvasRenderingContext2D, li
     moving = false;
     await listener({ type: "moved", start: startPosition, current: getPosition(event) });
   };
-  canvas.onmouseleave = async () => {
-    if (!moving) return;
-    moving = false;
-    await listener({ type: "canceled", start: DummyPosition, current: DummyPosition });
-  };
+  // canvas.onmouseleave = async () => {
+  //   if (!moving) return;
+  //   moving = false;
+  //   await listener({ type: "canceled", start: DummyPosition, current: DummyPosition });
+  // };
   canvas.oncontextmenu = async () => {
     moving = false;
     await listener({ type: "canceled", start: DummyPosition, current: DummyPosition });
