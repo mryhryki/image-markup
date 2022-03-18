@@ -1,7 +1,15 @@
+let beforeImageDataUrl = "";
+let beforeImage = new Image();
+
 export const getImage = async (imageDataUrl: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
-    const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", reject);
-    image.src = imageDataUrl;
+    if (beforeImageDataUrl === imageDataUrl) {
+      resolve(beforeImage);
+      return;
+    }
+    beforeImageDataUrl = imageDataUrl;
+    beforeImage = new Image();
+    beforeImage.addEventListener("load", () => resolve(beforeImage));
+    beforeImage.addEventListener("error", reject);
+    beforeImage.src = imageDataUrl;
   });
