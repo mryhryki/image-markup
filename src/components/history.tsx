@@ -1,7 +1,7 @@
 import React from "react";
 import { History as HistoryType } from "../util/history";
 import styled from "styled-components";
-import { DateTime } from "@mryhryki/datetime";
+import { getDateTime } from "../util/datetime";
 
 const Wrapper = styled.div`
   max-height: 100%;
@@ -56,17 +56,17 @@ export const History: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       {histories.map((history) => {
-        const { year, month, day, hour, minute, second } = DateTime.parse(history.datetime).get();
+        const { year, month, day, hour, minute, second } = getDateTime(new Date(history.datetime));
 
         return (
           <HistoryWrapper key={history.datetime} onClick={() => onSelect(history)}>
             <Thumbnail src={history.thumbnailDataUrl} />
             <DateTimeWrapper>
               <TimeText>
-                {year}-{month}-{day}
+                {hour}:{minute}:{second}
               </TimeText>
               <DateText>
-                {hour}-{minute}-{second}
+                {year}-{month}-{day}
               </DateText>
             </DateTimeWrapper>
           </HistoryWrapper>

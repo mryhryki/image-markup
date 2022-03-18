@@ -13,7 +13,6 @@ export const useCanvas = (): UseCanvasState => {
 
   const render = async (imageDataUrl: string): Promise<void> => {
     if (context == null) return;
-    console.debug(imageDataUrl.substring(0, 100));
     const image = await getImage(imageDataUrl);
     const { naturalWidth: width, naturalHeight: height } = image;
     context.canvas.width = width;
