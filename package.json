@@ -3,8 +3,8 @@
   "author": "mryhryki",
   "private": true,
   "engines": {
-    "node": "16.x",
-    "npm": "8.x"
+    "node": ">= 14",
+    "npm": ">= 6"
   },
   "scripts": {
     "build": "vite build",
