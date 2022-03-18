@@ -119,16 +119,10 @@ export const App: React.FC = () => {
 
   return (
     <Wrapper onImageFileDrop={onImageFileSelected}>
-      <Header/>
+      <Header />
       <Content ref={setRef}>
-        <Canvas
-          canvasRef={canvasRef}
-          showUploadMessage={!rendered}
-          onImageFileSelected={onImageFileSelected}
-        />
-        {canUseHistory && (
-          <History histories={histories} onSelect={({ dataUrl }) => render(dataUrl)}/>
-        )}
+        <Canvas canvasRef={canvasRef} showUploadMessage={!rendered} onImageFileSelected={onImageFileSelected} />
+        {canUseHistory && <History histories={histories} onSelect={({ dataUrl }) => render(dataUrl)} />}
       </Content>
       <Footer>
         <FooterGroup>
@@ -140,13 +134,15 @@ export const App: React.FC = () => {
           />
         </FooterGroup>
         <FooterGroup>
-          <DrawerSelector drawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text}/>
+          <DrawerSelector drawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text} />
         </FooterGroup>
         <FooterGroup>
-          <ColorSelector color={color} setColor={setColor}/>
+          <ColorSelector color={color} setColor={setColor} />
         </FooterGroup>
         <FooterGroup>
-          <a href="https://github.com/mryhryki/image-markup" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://github.com/mryhryki/image-markup" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
         </FooterGroup>
       </Footer>
     </Wrapper>

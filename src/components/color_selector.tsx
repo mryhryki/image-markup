@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 
-
 export const ButtonColor = styled.button`
   border: none;
   border-radius: 2px;
@@ -29,13 +28,7 @@ export const ButtonColor = styled.button`
   }
 `;
 
-
-const color_selector: string[] = [
-  "#ff0000",
-  "#EDAD0B",
-  "#00993D",
-  "#0066FF",
-];
+const color_selector: string[] = ["#ff0000", "#EDAD0B", "#00993D", "#0066FF"];
 
 interface Props {
   color: string;

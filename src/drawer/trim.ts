@@ -3,7 +3,7 @@ import { getImage } from "../util/render_image_to_canvas";
 
 export const trim = async (context: CanvasRenderingContext2D, from: Position, to: Position): Promise<void> => {
   const canvas = context.canvas;
-  const image = await getImage(canvas.toDataURL())
+  const image = await getImage(canvas.toDataURL());
 
   const left = Math.max(Math.min(from.x, to.x), 0);
   const right = Math.min(Math.max(from.x, to.x), canvas.width);

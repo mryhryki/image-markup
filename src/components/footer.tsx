@@ -14,4 +14,3 @@ export const Footer = styled.footer`
   position: absolute;
   width: 100vw;
 `;
-

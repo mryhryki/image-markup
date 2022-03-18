@@ -1,8 +1,8 @@
-type Drawer = () => CanvasRenderingContext2D
+type Drawer = () => CanvasRenderingContext2D;
 
 export const buildImageToCanvasRenderer = async (
   imageDataUrl: string,
-  context: CanvasRenderingContext2D,
+  context: CanvasRenderingContext2D
 ): Promise<Drawer> => {
   const image = await getImage(imageDataUrl);
   context.canvas.width = image.width;
@@ -14,9 +14,10 @@ export const buildImageToCanvasRenderer = async (
   };
 };
 
-export const getImage = async (imageDataUrl: string): Promise<HTMLImageElement> => new Promise((resolve, reject) => {
-  const image = new Image();
-  image.addEventListener("load", () => resolve(image));
-  image.addEventListener("error", reject);
-  image.src = imageDataUrl;
-});
+export const getImage = async (imageDataUrl: string): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.addEventListener("load", () => resolve(image));
+    image.addEventListener("error", reject);
+    image.src = imageDataUrl;
+  });

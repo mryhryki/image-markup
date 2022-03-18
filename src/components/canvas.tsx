@@ -58,7 +58,7 @@ export const Canvas: React.FC<Props> = (props) => {
           </p>
         </Message>
       )}
-      <FitCanvas ref={canvasRef} height={1} width={1}/>
+      <FitCanvas ref={canvasRef} height={1} width={1} />
     </CanvasWrapper>
   );
 };

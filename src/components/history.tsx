@@ -63,7 +63,7 @@ export const History: React.FC<Props> = (props) => {
 
         return (
           <HistoryWrapper key={history.datetime} onClick={() => onSelect(history)}>
-            <Thumbnail src={history.thumbnailDataUrl}/>
+            <Thumbnail src={history.thumbnailDataUrl} />
             <DateTimeWrapper>
               <TimeText>{time}</TimeText>
               <DateText>{date}</DateText>

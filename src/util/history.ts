@@ -56,7 +56,10 @@ export const listHistory = async (/* numPerPage: number, page = 1 */): Promise<A
     return [];
   }
   // const offset = (page - 1) * numPerPage;
-  return histories.orderBy("datetime").reverse()/*.offset(offset).limit(numPerPage)*/.toArray();
+  return histories
+    .orderBy("datetime")
+    .reverse() /*.offset(offset).limit(numPerPage)*/
+    .toArray();
 };
 
 // export const getBeforeHistory = async (baseDatetime: string): Promise<History | null> => {

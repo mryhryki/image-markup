@@ -2,14 +2,8 @@ import React, { useEffect } from "react";
 import { ButtonWithIcon } from "./button_with_icon";
 import styled from "styled-components";
 
-export type DrawerType = "arrow" | "rectangle_border" | "mask" | "text" | "trim"
-const Drawers: DrawerType[] = [
-  "arrow",
-  "rectangle_border",
-  "mask",
-  "trim",
-  "text",
-];
+export type DrawerType = "arrow" | "rectangle_border" | "mask" | "text" | "trim";
+const Drawers: DrawerType[] = ["arrow", "rectangle_border", "mask", "trim", "text"];
 
 const TextInput = styled.input`
   border-color: silver;
@@ -40,13 +34,7 @@ export const DrawerSelector: React.FC<Props> = (props) => {
   return (
     <>
       {Drawers.map((d) => (
-        <ButtonWithIcon
-          alt={drawer}
-          iconName={d}
-          key={d}
-          onClick={() => setDrawer(d)}
-          selected={d === drawer}
-        />
+        <ButtonWithIcon alt={drawer} iconName={d} key={d} onClick={() => setDrawer(d)} selected={d === drawer} />
       ))}
       <TextInput
         onChange={(event) => {

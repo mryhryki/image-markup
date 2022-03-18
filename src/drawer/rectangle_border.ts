@@ -7,7 +7,12 @@ interface Options {
   lineDashSegments?: number[];
 }
 
-export const drawRectangleBorder = (context: CanvasRenderingContext2D, from: Position, to: Position, options: Options): void => {
+export const drawRectangleBorder = (
+  context: CanvasRenderingContext2D,
+  from: Position,
+  to: Position,
+  options: Options
+): void => {
   const color = options.color;
 
   context.strokeStyle = color;
@@ -16,7 +21,7 @@ export const drawRectangleBorder = (context: CanvasRenderingContext2D, from: Pos
   context.lineCap = "round";
   context.lineJoin = "round";
   if (options.lineDashSegments) {
-    context.setLineDash(options.lineDashSegments)
+    context.setLineDash(options.lineDashSegments);
   }
 
   const positions: Position[] = [];

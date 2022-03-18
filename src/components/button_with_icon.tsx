@@ -65,8 +65,7 @@ export const ButtonWithIcon: React.FC<Props> = (props) => {
 
   return (
     <Button onClick={onClick} className={selected ? "selected" : ""}>
-      <Image alt={alt} src={getImage(iconName)}/>
+      <Image alt={alt} src={getImage(iconName)} />
     </Button>
   );
 };
-

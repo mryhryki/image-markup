@@ -7,5 +7,5 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
-  plugins: [ reactRefresh()],
+  plugins: [reactRefresh()],
 });

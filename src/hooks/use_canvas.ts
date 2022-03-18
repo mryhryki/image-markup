@@ -6,7 +6,7 @@ const _DummyContext = DummyCanvas.getContext("2d", { alpha: false });
 if (_DummyContext == null) throw new Error("Cannot get context");
 const DummyContext: CanvasRenderingContext2D = _DummyContext;
 
-type ReRenderFunc = () => void
+type ReRenderFunc = () => void;
 
 interface UseCanvasState {
   canvasRef: RefObject<HTMLCanvasElement>;
