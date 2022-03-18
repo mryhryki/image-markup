@@ -36,7 +36,6 @@ export const setUserActionEventListener = (
   };
   ref.onmousemove = async (event) => {
     if (!moving) return;
-    console.debug(getCanvasPosition(event, canvas));
     await listener({ type: "moving", start: startPosition, current: getCanvasPosition(event, canvas) });
   };
   ref.onmouseup = async (event) => {

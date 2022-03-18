@@ -34,7 +34,14 @@ export const DrawerSelector: React.FC<Props> = (props) => {
   return (
     <>
       {Drawers.map((d) => (
-        <ButtonWithIcon alt={drawer} iconName={d} key={d} onClick={() => setDrawer(d)} selected={d === drawer} />
+        <ButtonWithIcon
+          alt={drawer}
+          iconName={d}
+          key={d}
+          onClick={() => setDrawer(d)}
+          selected={d === drawer}
+          disabled={false}
+        />
       ))}
       <TextInput
         onChange={(event) => {

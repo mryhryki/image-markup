@@ -18,7 +18,8 @@ export const Button = styled.button`
   }
 `;
 
-const Image = styled.img`
+const Image = styled.img<{ disabled: boolean }>`
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   width: 20px;
   height: 20px;
 `;
@@ -28,14 +29,15 @@ interface Props {
   iconName: string;
   onClick: () => void;
   selected: boolean;
+  disabled: boolean;
 }
 
 export const ButtonWithIcon: React.FC<Props> = (props) => {
-  const { onClick, alt, iconName, selected } = props;
+  const { onClick, alt, iconName, selected, disabled } = props;
 
   return (
-    <Button onClick={onClick} className={selected ? "selected" : ""}>
-      <Image alt={alt} src={`/icon/${iconName}.jpeg`} />
+    <Button onClick={onClick} className={selected ? "selected" : ""} disabled={disabled}>
+      <Image disabled={disabled} alt={alt} src={`/icon/${iconName}.jpeg`} />
     </Button>
   );
 };

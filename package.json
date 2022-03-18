@@ -11,9 +11,12 @@
     "dev": "vite --port 3000",
     "preview": "vite preview --port 3000",
     "lint": "mryhryki-lint",
-    "lint:fix": "mryhryki-lint-fix"
+    "lint:fix": "mryhryki-lint-fix",
+    "type": "tsc",
+    "type:watch": "tsc --watch"
   },
   "dependencies": {
+    "@mryhryki/datetime": "^0.0.4",
     "@mryhryki/lint": "^0.0.6",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",

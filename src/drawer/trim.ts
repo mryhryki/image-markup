@@ -1,5 +1,5 @@
 import { Position } from "../util/user_action_event";
-import { getImage } from "../util/render_image_to_canvas";
+import { getImage } from "../util/image";
 
 export const trim = async (context: CanvasRenderingContext2D, from: Position, to: Position): Promise<void> => {
   const canvas = context.canvas;

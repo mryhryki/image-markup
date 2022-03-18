@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React from "react";
 import styled from "styled-components";
 import { selectImage } from "../util/select_image_file";
 
@@ -37,13 +37,13 @@ const FitCanvas = styled.canvas`
 `;
 
 interface Props {
-  canvasRef: RefObject<HTMLCanvasElement>;
+  setCanvasRef: (ref: HTMLCanvasElement) => void;
   showUploadMessage: boolean;
   onImageFileSelected: (file: File) => void;
 }
 
 export const Canvas: React.FC<Props> = (props) => {
-  const { canvasRef, showUploadMessage, onImageFileSelected } = props;
+  const { setCanvasRef, showUploadMessage, onImageFileSelected } = props;
 
   return (
     <CanvasWrapper>
@@ -58,7 +58,7 @@ export const Canvas: React.FC<Props> = (props) => {
           </p>
         </Message>
       )}
-      <FitCanvas ref={canvasRef} height={1} width={1} />
+      <FitCanvas ref={setCanvasRef} height={1} width={1} />
     </CanvasWrapper>
   );
 };

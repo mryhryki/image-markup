@@ -28,7 +28,6 @@ export const drawArrow = (context: CanvasRenderingContext2D, from: Position, to:
     y: from.y - headLen * Math.sin(angle + Math.PI / 6.5),
   });
   positions.push(from);
-  // console.debug(positions.map((p) => JSON.stringify(p)).join("\n"))
 
   context.beginPath();
   positions.forEach(({ x, y }, i) => {

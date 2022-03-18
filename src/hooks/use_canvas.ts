@@ -1,51 +1,31 @@
-import { RefObject, useEffect, useRef, useState } from "react";
-import { buildImageToCanvasRenderer } from "../util/render_image_to_canvas";
-
-const DummyCanvas: HTMLCanvasElement = document.createElement("canvas");
-const _DummyContext = DummyCanvas.getContext("2d", { alpha: false });
-if (_DummyContext == null) throw new Error("Cannot get context");
-const DummyContext: CanvasRenderingContext2D = _DummyContext;
-
-type ReRenderFunc = () => void;
+import { useEffect, useState } from "react";
+import { getImage } from "../util/image";
 
 interface UseCanvasState {
-  canvasRef: RefObject<HTMLCanvasElement>;
-  context: CanvasRenderingContext2D;
-  reRender: ReRenderFunc;
+  setCanvasRef: (ref: HTMLCanvasElement) => void;
+  context: CanvasRenderingContext2D | null;
   render: (imageDataUrl: string) => Promise<void>;
-  rendered: boolean;
-  update: () => Promise<void>;
 }
 
 export const useCanvas = (): UseCanvasState => {
-  const canvasRef = useRef(DummyCanvas);
-  const [rendered, setRendered] = useState(false);
-  const [context, setContext] = useState(DummyContext);
-  const [reRender, setReRender] = useState<ReRenderFunc>(() => undefined);
-
-  const update = async (): Promise<void> => {
-    const reRender = await buildImageToCanvasRenderer(context.canvas.toDataURL("image/png"), context);
-    reRender();
-    setReRender(() => reRender);
-  };
+  const [canvasRef, setCanvasRef] = useState<HTMLCanvasElement | null>(null);
+  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
   const render = async (imageDataUrl: string): Promise<void> => {
-    if (!rendered) {
-      setRendered(true);
-    }
-    const reRender = await buildImageToCanvasRenderer(imageDataUrl, context);
-    reRender();
-    setReRender(() => reRender);
+    if (context == null) return;
+    console.debug(imageDataUrl.substring(0, 100));
+    const image = await getImage(imageDataUrl);
+    const { naturalWidth: width, naturalHeight: height } = image;
+    context.canvas.width = width;
+    context.canvas.height = height;
+    context.clearRect(0, 0, width, height);
+    context.drawImage(image, 0, 0);
   };
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (canvasRef.current !== DummyCanvas) {
-        clearInterval(intervalId);
-        setContext(canvasRef.current.getContext("2d", { alpha: false }) ?? DummyContext);
-      }
-    }, 0);
-  }, [canvasRef.current]);
+    if (canvasRef == null) return;
+    setContext(canvasRef.getContext("2d", { alpha: false }) ?? null);
+  }, [canvasRef]);
 
-  return { canvasRef, context, rendered, render, reRender, update };
+  return { setCanvasRef, context, render };
 };

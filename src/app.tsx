@@ -17,7 +17,7 @@ import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
 import { drawText } from "./drawer/text";
 import { drawMask } from "./drawer/mask";
-import { useStorage } from "./hooks/use_storage";
+import { useStateWithStorage } from "./hooks/use_state_with_storage";
 import { trim } from "./drawer/trim";
 
 const Content = styled.div`
@@ -40,17 +40,23 @@ const FooterGroup = styled.div`
 
 export const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const [drawerType, setDrawerType] = useStorage<DrawerType>("drawer_type", "arrow");
-  const [color, setColor] = useStorage<string>("color", "default");
-  const [text, setText] = useStorage<string>("text", "");
+  const [drawerType, setDrawerType] = useStateWithStorage<DrawerType>("drawer_type", "arrow");
+  const [color, setColor] = useStateWithStorage<string>("color", "default");
+  const [text, setText] = useStateWithStorage<string>("text", "");
 
-  const { canvasRef, context, rendered, render, reRender, update } = useCanvas();
+  const { setCanvasRef, context, render } = useCanvas();
   const { canUseHistory, histories, addHistory } = useHistory();
 
+  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   useEffect(() => {
-    if (ref == null) return;
+    if (currentImageUrl == null) return;
+    render(currentImageUrl);
+  }, [currentImageUrl]);
+
+  useEffect(() => {
+    if (ref == null || context == null || currentImageUrl == null) return;
     setUserActionEventListener(ref, context, async (event): Promise<void> => {
-      reRender();
+      await render(currentImageUrl);
       switch (event.type) {
         case "start":
           // Do nothing
@@ -99,20 +105,21 @@ export const App: React.FC = () => {
             default:
               return;
           }
-          await update();
-          await addHistory(context.canvas.toDataURL("image/png"));
+          const newImageUrl = context.canvas.toDataURL("image/png");
+          setCurrentImageUrl(newImageUrl);
+          await addHistory(newImageUrl);
           break;
         case "canceled":
           // Do nothing
           break;
       }
     });
-  }, [ref, context, reRender, drawerType, text, color, addHistory]);
+  }, [ref, context, currentImageUrl, drawerType, text, color, addHistory]);
 
   const onImageFileSelected = (imageFile: File): void => {
     (async () => {
       const imageDataUrl = await fileToDataUrl(imageFile);
-      await render(imageDataUrl);
+      setCurrentImageUrl(imageDataUrl);
       await addHistory(imageDataUrl);
     })();
   };
@@ -121,16 +128,21 @@ export const App: React.FC = () => {
     <Wrapper onImageFileDrop={onImageFileSelected}>
       <Header />
       <Content ref={setRef}>
-        <Canvas canvasRef={canvasRef} showUploadMessage={!rendered} onImageFileSelected={onImageFileSelected} />
-        {canUseHistory && <History histories={histories} onSelect={({ dataUrl }) => render(dataUrl)} />}
+        <Canvas
+          setCanvasRef={setCanvasRef}
+          showUploadMessage={currentImageUrl == null}
+          onImageFileSelected={onImageFileSelected}
+        />
+        {canUseHistory && <History histories={histories} onSelect={({ dataUrl }) => setCurrentImageUrl(dataUrl)} />}
       </Content>
       <Footer>
         <FooterGroup>
           <ButtonWithIcon
             alt="download"
             iconName="download"
-            onClick={() => downloadCanvasImage(context)}
+            onClick={() => context != null && downloadCanvasImage(context)}
             selected={false}
+            disabled={currentImageUrl == null}
           />
         </FooterGroup>
         <FooterGroup>

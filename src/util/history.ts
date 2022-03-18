@@ -42,62 +42,10 @@ export const addHistory = async (datetime: string, dataUrl: string, thumbnailDat
   return true;
 };
 
-// export const getLatestHistory = async (): Promise<History | null> => {
-//   const histories = getHistoriesTable();
-//   if (histories == null) {
-//     return null;
-//   }
-//   return (await histories.orderBy("datetime").reverse().limit(1).first()) ?? null;
-// };
-
 export const listHistory = async (/* numPerPage: number, page = 1 */): Promise<Array<History>> => {
   const histories = getHistoriesTable();
   if (histories == null) {
     return [];
   }
-  // const offset = (page - 1) * numPerPage;
-  return histories
-    .orderBy("datetime")
-    .reverse() /*.offset(offset).limit(numPerPage)*/
-    .toArray();
+  return histories.orderBy("datetime").reverse().toArray();
 };
-
-// export const getBeforeHistory = async (baseDatetime: string): Promise<History | null> => {
-//   const histories = getHistoriesTable();
-//   if (histories == null) {
-//     return null;
-//   }
-//   const datetimeList: string[] = (await histories.toCollection().primaryKeys()).sort();
-//   const index = datetimeList.findIndex((datetime) => {
-//     return datetime === baseDatetime;
-//   });
-//   const beforeIndex = index - 1;
-//   if (datetimeList[beforeIndex] == null) {
-//     return null;
-//   }
-//   return (await histories.get(datetimeList[beforeIndex])) ?? null;
-// };
-//
-// export const getAfterHistory = async (baseDatetime: string): Promise<History | null> => {
-//   const histories = getHistoriesTable();
-//   if (histories == null) {
-//     return null;
-//   }
-//   const datetimeList: string[] = (await histories.toCollection().primaryKeys()).sort();
-//   const index = datetimeList.findIndex((datetime) => {
-//     return datetime === baseDatetime;
-//   });
-//   const afterIndex = index + 1;
-//   if (datetimeList[afterIndex] == null) {
-//     return null;
-//   }
-//   return (await histories.get(datetimeList[afterIndex])) ?? null;
-// };
-//
-// export const countHistories = async (): Promise<number> => {
-//   const histories = getHistoriesTable();
-//   if (histories == null) {
-//     return 0;
-//   }
-//   return histories.count();
-// };

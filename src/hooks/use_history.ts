@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { addHistory as addHistoryToIndexedDb, History, initIndexedDb, listHistory } from "../util/history";
-import { getImage } from "../util/render_image_to_canvas";
+import { getImage } from "../util/image";
+import { DateTime } from "@mryhryki/datetime";
 
 interface UseHistoryState {
   addHistory: (imageDataUrl: string) => Promise<void>;
@@ -20,17 +21,18 @@ export const useHistory = (): UseHistoryState => {
     if (context == null) return;
 
     const image = await getImage(imageDataUrl);
-    const baseLen = image.width > image.height ? image.width : image.height;
+    const { naturalWidth, naturalHeight } = image;
+    const baseLen = naturalWidth > naturalHeight ? naturalWidth : naturalHeight;
     const rate = 192 / baseLen;
-    const width = image.width * rate;
-    const height = image.height * rate;
+    const width = naturalWidth * rate;
+    const height = naturalHeight * rate;
 
     canvas.width = width;
     canvas.height = height;
     context.drawImage(image, 0, 0, width, height);
     const thumbnailDataUrl = canvas.toDataURL("image/png");
 
-    const datetime = new Date().toISOString();
+    const datetime = DateTime.now().toISO();
     addHistoryToIndexedDb(datetime, imageDataUrl, thumbnailDataUrl).then(() => listHistory().then(setHistories));
   };
 
