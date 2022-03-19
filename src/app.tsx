@@ -148,7 +148,7 @@ export const App: React.FC = () => {
           <DrawerSelector selectedDrawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text} />
         </FooterGroup>
         <FooterGroup>
-          <ColorSelector color={color} setColor={setColor} />
+          <ColorSelector selectedColor={color} onChangeSelectedColor={setColor} />
         </FooterGroup>
         <FooterGroup>
           <a href="https://github.com/mryhryki/image-markup" target="_blank" rel="noopener noreferrer">

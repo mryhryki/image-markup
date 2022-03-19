@@ -28,30 +28,30 @@ export const ButtonColor = styled.button`
   }
 `;
 
-const color_selector: string[] = ["#ff0000", "#EDAD0B", "#00993D", "#0066FF"];
+const Colors: string[] = ["#ff0000", "#EDAD0B", "#00993D", "#0066FF"];
 
 interface Props {
-  color: string;
-  setColor: (color: string) => void;
+  selectedColor: string;
+  onChangeSelectedColor: (color: string) => void;
 }
 
 export const ColorSelector: React.FC<Props> = (props) => {
-  const { color, setColor } = props;
+  const { selectedColor, onChangeSelectedColor } = props;
 
   useEffect(() => {
-    if (!color_selector.includes(color)) {
-      setColor(color_selector[0]);
+    if (!Colors.includes(selectedColor)) {
+      onChangeSelectedColor(Colors[0]);
     }
-  }, [color]);
+  }, [selectedColor]);
 
   return (
     <>
-      {color_selector.map((c) => (
+      {Colors.map((color) => (
         <ButtonColor
-          key={c}
-          style={{ backgroundColor: c }}
-          onClick={() => setColor(c)}
-          className={c === color ? "selected" : ""}
+          key={color}
+          style={{ backgroundColor: color }}
+          onClick={() => onChangeSelectedColor(color)}
+          className={color === selectedColor ? "selected" : ""}
         >
           {" "}
         </ButtonColor>
