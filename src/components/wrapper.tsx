@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { PermitFileType } from "../util/select_image_file";
+import { PermitFileType } from "../util/config";
 
 const StyledWrapper = styled.div`
   align-items: center;

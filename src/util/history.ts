@@ -42,7 +42,7 @@ export const addHistory = async (datetime: string, dataUrl: string, thumbnailDat
   return true;
 };
 
-export const listHistory = async (/* numPerPage: number, page = 1 */): Promise<Array<History>> => {
+export const listHistory = async (): Promise<Array<History>> => {
   const histories = getHistoriesTable();
   if (histories == null) {
     return [];

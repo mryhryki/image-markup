@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { selectImage } from "../util/select_image_file";
+import { PermitFileType } from "../util/config";
 
 const CanvasWrapper = styled.div`
   align-items: center;
@@ -36,6 +36,15 @@ const FitCanvas = styled.canvas`
   max-width: 100%;
 `;
 
+const DummyInputFile = styled.input`
+  max-width: 1px;
+  max-height: 1px;
+  position: fixed;
+  display: block;
+  bottom: -1px;
+  right: -1px;
+`;
+
 interface Props {
   setCanvasRef: (ref: HTMLCanvasElement) => void;
   showUploadMessage: boolean;
@@ -44,6 +53,7 @@ interface Props {
 
 export const Canvas: React.FC<Props> = (props) => {
   const { setCanvasRef, showUploadMessage, onImageFileSelected } = props;
+  const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
 
   return (
     <CanvasWrapper>
@@ -51,14 +61,26 @@ export const Canvas: React.FC<Props> = (props) => {
         <Message>
           <p>Drop or paste image file here!</p>
           <p>
-            or{" "}
-            <UploadImageFileButton onClick={() => selectImage(onImageFileSelected)}>
-              select image file.
-            </UploadImageFileButton>
+            or <UploadImageFileButton onClick={() => inputRef?.click()}>select image file.</UploadImageFileButton>
           </p>
         </Message>
       )}
       <FitCanvas ref={setCanvasRef} height={1} width={1} />
+      <DummyInputFile
+        type="file"
+        ref={setInputRef}
+        accept={PermitFileType.join(",")}
+        multiple={false}
+        onChange={(event) => {
+          event.preventDefault();
+          if (inputRef?.files != null && inputRef.files.length > 0) {
+            const file = inputRef.files.item(0);
+            if (file != null) {
+              onImageFileSelected(file);
+            }
+          }
+        }}
+      />
     </CanvasWrapper>
   );
 };

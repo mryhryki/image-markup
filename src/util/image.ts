@@ -1,3 +1,4 @@
+// Cache
 let beforeImageDataUrl = "";
 let beforeImage = new Image();
 
