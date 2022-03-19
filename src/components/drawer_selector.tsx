@@ -16,20 +16,20 @@ const TextInput = styled.input`
 `;
 
 interface Props {
-  drawer: DrawerType;
+  selectedDrawer: DrawerType;
   setDrawer: (drawer: DrawerType) => void;
   setText: (text: string) => void;
   text: string;
 }
 
 export const DrawerSelector: React.FC<Props> = (props) => {
-  const { drawer, setDrawer, setText, text } = props;
+  const { selectedDrawer, setDrawer, setText, text } = props;
 
   useEffect(() => {
-    if (!Drawers.includes(drawer)) {
+    if (!Drawers.includes(selectedDrawer)) {
       setDrawer(Drawers[0]);
     }
-  }, [drawer]);
+  }, [selectedDrawer]);
 
   return (
     <>
@@ -38,19 +38,19 @@ export const DrawerSelector: React.FC<Props> = (props) => {
           iconName={drawer}
           key={drawer}
           onClick={() => setDrawer(drawer)}
-          selected={drawer === drawer}
+          selected={drawer === selectedDrawer}
           disabled={false}
         />
       ))}
       <TextInput
         onChange={(event) => {
-          if (drawer !== "text") {
+          if (selectedDrawer !== "text") {
             setDrawer("text");
           }
           setText(event.target.value);
         }}
         placeholder="draw text"
-        disabled={drawer !== "text"}
+        disabled={selectedDrawer !== "text"}
         value={text}
       />
     </>

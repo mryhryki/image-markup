@@ -145,7 +145,7 @@ export const App: React.FC = () => {
           />
         </FooterGroup>
         <FooterGroup>
-          <DrawerSelector drawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text} />
+          <DrawerSelector selectedDrawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text} />
         </FooterGroup>
         <FooterGroup>
           <ColorSelector color={color} setColor={setColor} />
