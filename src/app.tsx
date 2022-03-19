@@ -106,7 +106,7 @@ export const App: React.FC = () => {
               return;
           }
           const newImageUrl = context.canvas.toDataURL("image/png");
-          setCurrentImageUrl(newImageUrl);
+          setTimeout(() => setCurrentImageUrl(newImageUrl), 100);
           await addHistory(newImageUrl);
           break;
         case "canceled":

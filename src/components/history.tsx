@@ -19,6 +19,7 @@ const HistoryWrapper = styled.button`
   flex-direction: row;
   height: 104px;
   margin: 4px;
+  overflow: hidden;
   padding: 4px;
   width: 184px;
 `;
