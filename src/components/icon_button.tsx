@@ -25,19 +25,18 @@ const Image = styled.img<{ disabled: boolean }>`
 `;
 
 interface Props {
-  alt: string;
   iconName: string;
   onClick: () => void;
   selected: boolean;
   disabled: boolean;
 }
 
-export const ButtonWithIcon: React.FC<Props> = (props) => {
-  const { onClick, alt, iconName, selected, disabled } = props;
+export const IconButton: React.FC<Props> = (props) => {
+  const { onClick, iconName, selected, disabled } = props;
 
   return (
     <Button onClick={onClick} className={selected ? "selected" : ""} disabled={disabled}>
-      <Image disabled={disabled} alt={alt} src={`/icon/${iconName}.jpeg`} />
+      <Image disabled={disabled} alt={iconName} src={`/icon/${iconName}.jpeg`} />
     </Button>
   );
 };

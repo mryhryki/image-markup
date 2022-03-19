@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ButtonWithIcon } from "./components/button_with_icon";
+import { IconButton } from "./components/icon_button";
 import { Canvas } from "./components/canvas";
 import { ColorSelector } from "./components/color_selector";
 import { DrawerSelector, DrawerType } from "./components/drawer_selector";
@@ -137,8 +137,7 @@ export const App: React.FC = () => {
       </Content>
       <Footer>
         <FooterGroup>
-          <ButtonWithIcon
-            alt="download"
+          <IconButton
             iconName="download"
             onClick={() => context != null && downloadCanvasImage(context)}
             selected={false}

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ButtonWithIcon } from "./button_with_icon";
+import { IconButton } from "./icon_button";
 import styled from "styled-components";
 
 export type DrawerType = "arrow" | "rectangle_border" | "mask" | "text" | "trim";
@@ -33,13 +33,12 @@ export const DrawerSelector: React.FC<Props> = (props) => {
 
   return (
     <>
-      {Drawers.map((d) => (
-        <ButtonWithIcon
-          alt={drawer}
-          iconName={d}
-          key={d}
-          onClick={() => setDrawer(d)}
-          selected={d === drawer}
+      {Drawers.map((drawer) => (
+        <IconButton
+          iconName={drawer}
+          key={drawer}
+          onClick={() => setDrawer(drawer)}
+          selected={drawer === drawer}
           disabled={false}
         />
       ))}
