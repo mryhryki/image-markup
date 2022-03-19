@@ -5,9 +5,9 @@ import { PermitFileType } from "../util/select_image_file";
 const StyledWrapper = styled.div`
   align-items: center;
   display: flex;
-  height: 100%;
+  height: 100vh;
   justify-content: center;
-  width: 100%;
+  width: 100vw;
 `;
 
 interface Props {
