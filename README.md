@@ -2,7 +2,7 @@
 
 Simple image markup web app.
 
-https://image-markup.vercel.app/
+https://mryhryki.com/app/image-markup/index.html
 
 ## Demo
 
