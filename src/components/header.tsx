@@ -29,7 +29,7 @@ const Title = styled.h1`
 export const Header: React.FC = () => {
   return (
     <StyledHeader>
-      <Logo height="36" width="36" src="/logo_96x96.png" alt="Logo" />
+      <Logo height="36" width="36" src="./logo_96x96.png" alt="Logo" />
       <Title>Image Markup</Title>
     </StyledHeader>
   );

@@ -36,7 +36,7 @@ export const IconButton: React.FC<Props> = (props) => {
 
   return (
     <Button onClick={onClick} className={selected ? "selected" : ""} disabled={disabled}>
-      <Image disabled={disabled} alt={iconName} src={`/icon/${iconName}.jpeg`} />
+      <Image disabled={disabled} alt={iconName} src={`./icon/${iconName}.jpeg`} />
     </Button>
   );
 };

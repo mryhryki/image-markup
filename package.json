@@ -9,6 +9,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3000",
+    "deploy": "run-s lint type build sync",
+    "sync": "aws s3 sync ./dist/ s3://mryhryki-cdn/contents/app/image-markup/ --no-progress --exclude '*.DS_Store*'",
     "preview": "vite preview --port 3000",
     "lint": "mryhryki-lint",
     "lint:fix": "mryhryki-lint-fix",
@@ -28,6 +30,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.25",
     "@vitejs/plugin-react-refresh": "^1.3.6",
+    "npm-run-all": "^4.1.5",
     "typescript": "^4.7.4",
     "vite": "^2.9.13"
   }
