@@ -1,1 +1,1 @@
-export const PermitFileType = ["image/png", "image/jpeg"];
+export const PermitFileType = ["image/png", "image/jpeg", "image/webp"];
