@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { PermitFileType } from "../util/config";
 
-const CanvasWrapper = styled.div`
+const CanvasWrapper = styled.button`
   align-items: center;
   background-color: #f6f6f6;
   border-radius: 2px;
@@ -19,14 +19,8 @@ const Message = styled.div`
   line-height: 28px;
 `;
 
-const UploadImageFileButton = styled.button`
-  background: none;
-  border: none;
+const LikeClickableText = styled.span`
   color: #0000ee;
-  display: inline;
-  font-size: 20px;
-  line-height: 28px;
-  padding: 0;
   text-decoration: underline;
 `;
 
@@ -56,13 +50,11 @@ export const Canvas: React.FC<Props> = (props) => {
   const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
 
   return (
-    <CanvasWrapper>
+    <CanvasWrapper onClick={showUploadMessage ? () => inputRef?.click() : undefined}>
       {showUploadMessage && (
         <Message>
           <p>Drop or paste image file here!</p>
-          <p>
-            or <UploadImageFileButton onClick={() => inputRef?.click()}>select image file.</UploadImageFileButton>
-          </p>
+          <p>Or <LikeClickableText>click this area and select image file.</LikeClickableText></p>
         </Message>
       )}
       <FitCanvas ref={setCanvasRef} height={1} width={1} />
