@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getImage } from "../util/image";
 
 interface UseCanvasState {
@@ -11,15 +11,18 @@ export const useCanvas = (): UseCanvasState => {
   const [canvasRef, setCanvasRef] = useState<HTMLCanvasElement | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
-  const render = async (imageDataUrl: string): Promise<void> => {
-    if (context == null) return;
-    const image = await getImage(imageDataUrl);
-    const { naturalWidth: width, naturalHeight: height } = image;
-    context.canvas.width = width;
-    context.canvas.height = height;
-    context.clearRect(0, 0, width, height);
-    context.drawImage(image, 0, 0);
-  };
+  const render = useCallback(
+    async (imageDataUrl: string): Promise<void> => {
+      if (context == null) return;
+      const image = await getImage(imageDataUrl);
+      const { naturalWidth: width, naturalHeight: height } = image;
+      context.canvas.width = width;
+      context.canvas.height = height;
+      context.clearRect(0, 0, width, height);
+      context.drawImage(image, 0, 0);
+    },
+    [context],
+  );
 
   useEffect(() => {
     if (canvasRef == null) return;
