@@ -1,5 +1,5 @@
 import { getLineWidth } from "../util/size";
-import { Position } from "../util/user_action_event";
+import type { Position } from "../util/user_action_event";
 
 interface Options {
   color: string;
@@ -11,7 +11,7 @@ export const drawRectangleBorder = (
   context: CanvasRenderingContext2D,
   from: Position,
   to: Position,
-  options: Options
+  options: Options,
 ): void => {
   const color = options.color;
 
