@@ -2,7 +2,9 @@
 let beforeImageDataUrl = "";
 let beforeImage = new Image();
 
-export const getImage = async (imageDataUrl: string): Promise<HTMLImageElement> =>
+export const getImage = async (
+  imageDataUrl: string,
+): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     if (beforeImageDataUrl === imageDataUrl) {
       resolve(beforeImage);
