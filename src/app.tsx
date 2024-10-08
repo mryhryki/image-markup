@@ -54,7 +54,7 @@ export const App: React.FC = () => {
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   useEffect(() => {
     if (currentImageUrl == null) return;
-    render(currentImageUrl);
+    render(currentImageUrl).catch(console.warn);
   }, [currentImageUrl, render]);
 
   useEffect(() => {
