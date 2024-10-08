@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { IconButton } from "./components/icon_button";
 import { Canvas } from "./components/canvas";
 import { ColorSelector } from "./components/color_selector";
-import { DrawerSelector, DrawerType } from "./components/drawer_selector";
+import { DrawerSelector, type DrawerType } from "./components/drawer_selector";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { History } from "./components/history";
+import { IconButton } from "./components/icon_button";
 import { Wrapper } from "./components/wrapper";
-import { downloadCanvasImage } from "./util/download_canvas_image";
 import { drawArrow } from "./drawer/arrow";
+import { drawMask } from "./drawer/mask";
 import { drawRectangleBorder } from "./drawer/rectangle_border";
-import { fileToDataUrl } from "./util/file_to_data_url";
-import { setUserActionEventListener } from "./util/user_action_event";
+import { drawText } from "./drawer/text";
+import { trim } from "./drawer/trim";
 import { useCanvas } from "./hooks/use_canvas";
 import { useHistory } from "./hooks/use_history";
-import { drawText } from "./drawer/text";
-import { drawMask } from "./drawer/mask";
 import { useStateWithStorage } from "./hooks/use_state_with_storage";
-import { trim } from "./drawer/trim";
+import { downloadCanvasImage } from "./util/download_canvas_image";
+import { fileToDataUrl } from "./util/file_to_data_url";
+import { setUserActionEventListener } from "./util/user_action_event";
 
 const Content = styled.div`
   align-items: stretch;
@@ -40,7 +41,10 @@ const FooterGroup = styled.div`
 
 export const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const [drawerType, setDrawerType] = useStateWithStorage<DrawerType>("drawer_type", "arrow");
+  const [drawerType, setDrawerType] = useStateWithStorage<DrawerType>(
+    "drawer_type",
+    "arrow",
+  );
   const [color, setColor] = useStateWithStorage<string>("color", "default");
   const [text, setText] = useStateWithStorage<string>("text", "");
 
@@ -51,7 +55,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (currentImageUrl == null) return;
     render(currentImageUrl);
-  }, [currentImageUrl]);
+  }, [currentImageUrl, render]);
 
   useEffect(() => {
     if (ref == null || context == null || currentImageUrl == null) return;
@@ -67,7 +71,9 @@ export const App: React.FC = () => {
               drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, { color });
+              drawRectangleBorder(context, event.start, event.current, {
+                color,
+              });
               break;
             case "mask":
               drawMask(context, event.start, event.current);
@@ -84,13 +90,15 @@ export const App: React.FC = () => {
               break;
           }
           break;
-        case "moved":
+        case "moved": {
           switch (drawerType) {
             case "arrow":
               drawArrow(context, event.start, event.current, color);
               break;
             case "rectangle_border":
-              drawRectangleBorder(context, event.start, event.current, { color });
+              drawRectangleBorder(context, event.start, event.current, {
+                color,
+              });
               break;
             case "mask":
               drawMask(context, event.start, event.current);
@@ -109,12 +117,22 @@ export const App: React.FC = () => {
           setTimeout(() => setCurrentImageUrl(newImageUrl), 100);
           await addHistory(newImageUrl);
           break;
+        }
         case "canceled":
           // Do nothing
           break;
       }
     });
-  }, [ref, context, currentImageUrl, drawerType, text, color, addHistory]);
+  }, [
+    addHistory,
+    color,
+    context,
+    currentImageUrl,
+    drawerType,
+    ref,
+    render,
+    text,
+  ]);
 
   const onImageFileSelected = (imageFile: File): void => {
     (async () => {
@@ -133,7 +151,12 @@ export const App: React.FC = () => {
           showUploadMessage={currentImageUrl == null}
           onImageFileSelected={onImageFileSelected}
         />
-        {canUseHistory && <History histories={histories} onSelect={({ dataUrl }) => setCurrentImageUrl(dataUrl)} />}
+        {canUseHistory && (
+          <History
+            histories={histories}
+            onSelect={({ dataUrl }) => setCurrentImageUrl(dataUrl)}
+          />
+        )}
       </Content>
       <Footer>
         <FooterGroup>
@@ -145,13 +168,25 @@ export const App: React.FC = () => {
           />
         </FooterGroup>
         <FooterGroup>
-          <DrawerSelector selectedDrawer={drawerType} setDrawer={setDrawerType} setText={setText} text={text} />
+          <DrawerSelector
+            selectedDrawer={drawerType}
+            setDrawer={setDrawerType}
+            setText={setText}
+            text={text}
+          />
         </FooterGroup>
         <FooterGroup>
-          <ColorSelector selectedColor={color} onChangeSelectedColor={setColor} />
+          <ColorSelector
+            selectedColor={color}
+            onChangeSelectedColor={setColor}
+          />
         </FooterGroup>
         <FooterGroup>
-          <a href="https://github.com/mryhryki/image-markup" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/mryhryki/image-markup"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             GitHub
           </a>
         </FooterGroup>

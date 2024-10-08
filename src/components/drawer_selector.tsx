@@ -1,9 +1,21 @@
-import React, { useEffect } from "react";
-import { IconButton } from "./icon_button";
+import type React from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
+import { IconButton } from "./icon_button";
 
-export type DrawerType = "arrow" | "rectangle_border" | "mask" | "text" | "trim";
-const Drawers: DrawerType[] = ["arrow", "rectangle_border", "mask", "trim", "text"];
+export type DrawerType =
+  | "arrow"
+  | "rectangle_border"
+  | "mask"
+  | "text"
+  | "trim";
+const Drawers: DrawerType[] = [
+  "arrow",
+  "rectangle_border",
+  "mask",
+  "trim",
+  "text",
+];
 
 const TextInput = styled.input`
   border-color: silver;
@@ -29,7 +41,7 @@ export const DrawerSelector: React.FC<Props> = (props) => {
     if (!Drawers.includes(selectedDrawer)) {
       setDrawer(Drawers[0]);
     }
-  }, [selectedDrawer]);
+  }, [setDrawer, selectedDrawer]);
 
   return (
     <>

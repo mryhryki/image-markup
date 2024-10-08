@@ -1,7 +1,11 @@
-import { Position } from "../util/user_action_event";
 import { getImage } from "../util/image";
+import type { Position } from "../util/user_action_event";
 
-export const trim = async (context: CanvasRenderingContext2D, from: Position, to: Position): Promise<void> => {
+export const trim = async (
+  context: CanvasRenderingContext2D,
+  from: Position,
+  to: Position,
+): Promise<void> => {
   const canvas = context.canvas;
   const image = await getImage(canvas.toDataURL());
 

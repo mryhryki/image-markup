@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { PermitFileType } from "../util/config";
 
@@ -50,11 +51,18 @@ export const Canvas: React.FC<Props> = (props) => {
   const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
 
   return (
-    <CanvasWrapper onClick={showUploadMessage ? () => inputRef?.click() : undefined}>
+    <CanvasWrapper
+      onClick={showUploadMessage ? () => inputRef?.click() : undefined}
+    >
       {showUploadMessage && (
         <Message>
           <p>Drop or paste image file here!</p>
-          <p>Or <LikeClickableText>click this area and select image file.</LikeClickableText></p>
+          <p>
+            Or{" "}
+            <LikeClickableText>
+              click this area and select image file.
+            </LikeClickableText>
+          </p>
         </Message>
       )}
       <FitCanvas ref={setCanvasRef} height={1} width={1} />

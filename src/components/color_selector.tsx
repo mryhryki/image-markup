@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 export const ButtonColor = styled.button`
@@ -42,7 +43,7 @@ export const ColorSelector: React.FC<Props> = (props) => {
     if (!Colors.includes(selectedColor)) {
       onChangeSelectedColor(Colors[0]);
     }
-  }, [selectedColor]);
+  }, [selectedColor, onChangeSelectedColor]);
 
   return (
     <>

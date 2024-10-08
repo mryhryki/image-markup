@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { addHistory as addHistoryToIndexedDb, History, initIndexedDb, listHistory } from "../util/history";
+import {
+  type History,
+  addHistory as addHistoryToIndexedDb,
+  initIndexedDb,
+  listHistory,
+} from "../util/history";
 import { getImage } from "../util/image";
 
 interface UseHistoryState {
@@ -32,7 +37,9 @@ export const useHistory = (): UseHistoryState => {
     const thumbnailDataUrl = canvas.toDataURL("image/png");
 
     const datetime = new Date().toISOString();
-    addHistoryToIndexedDb(datetime, imageDataUrl, thumbnailDataUrl).then(() => listHistory().then(setHistories));
+    addHistoryToIndexedDb(datetime, imageDataUrl, thumbnailDataUrl).then(() =>
+      listHistory().then(setHistories),
+    );
   };
 
   useEffect(() => {
@@ -43,7 +50,7 @@ export const useHistory = (): UseHistoryState => {
         setHistories(await listHistory());
       }
     })();
-  }, [setCanUseIndexedDb]);
+  }, []);
 
   return { canUseHistory: canUseIndexedDb, histories, addHistory };
 };

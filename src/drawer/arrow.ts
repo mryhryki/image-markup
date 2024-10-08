@@ -1,11 +1,18 @@
-import { Position } from "../util/user_action_event";
+import type { Position } from "../util/user_action_event";
 
-export const drawArrow = (context: CanvasRenderingContext2D, from: Position, to: Position, color: string): void => {
+export const drawArrow = (
+  context: CanvasRenderingContext2D,
+  from: Position,
+  to: Position,
+  color: string,
+): void => {
   context.strokeStyle = color;
   context.fillStyle = color;
 
   const angle = Math.atan2(from.y - to.y, from.x - to.x);
-  const len = Math.sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
+  const len = Math.sqrt(
+    (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y),
+  );
   const headLen = len * 0.35;
 
   const positions: Position[] = [];

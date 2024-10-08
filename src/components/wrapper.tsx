@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import styled from "styled-components";
 import { PermitFileType } from "../util/config";
 
@@ -29,7 +29,8 @@ export const Wrapper: React.FC<Props> = (props) => {
         const file = event.dataTransfer.files.item(0);
         if (file == null) {
           return;
-        } else if (!PermitFileType.includes(file.type)) {
+        }
+        if (!PermitFileType.includes(file.type)) {
           return;
         }
         onImageFileDrop(file);
@@ -38,7 +39,8 @@ export const Wrapper: React.FC<Props> = (props) => {
         const file = event.clipboardData.files.item(0);
         if (file == null) {
           return;
-        } else if (!PermitFileType.includes(file.type)) {
+        }
+        if (!PermitFileType.includes(file.type)) {
           return;
         }
         onImageFileDrop(file);
