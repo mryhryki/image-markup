@@ -1,4 +1,4 @@
-import Dexie from "dexie";
+import Dexie, { type EntityTable } from "dexie";
 
 export interface History {
   datetime: string;
@@ -6,15 +6,18 @@ export interface History {
   thumbnailDataUrl: string;
 }
 
-let database: Dexie | null = null;
-const db = new Dexie("image_markup");
+type DatabaseType = Dexie & {
+  histories: EntityTable<History>;
+};
+
+let database: DatabaseType | null = null;
+const db = new Dexie("image_markup") as DatabaseType;
 db.version(7).stores({
   histories: "&datetime",
 });
 
 export const initIndexedDb = async (): Promise<boolean> =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (db as any).histories
+  db.histories
     .orderBy("datetime")
     .reverse()
     .limit(1)
@@ -25,11 +28,15 @@ export const initIndexedDb = async (): Promise<boolean> =>
     })
     .catch(() => false);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getHistoriesTable = (): Dexie.Table<History, string> | null => (database as any)?.histories ?? null;
+export const getHistoriesTable = (): EntityTable<History> | null =>
+  database?.histories ?? null;
 const MAX_HISTORY = 30;
 
-export const addHistory = async (datetime: string, dataUrl: string, thumbnailDataUrl: string): Promise<boolean> => {
+export const addHistory = async (
+  datetime: string,
+  dataUrl: string,
+  thumbnailDataUrl: string,
+): Promise<boolean> => {
   const histories = getHistoriesTable();
   if (histories == null) {
     return false;
