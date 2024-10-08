@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import styled from "styled-components";
 
 export const Button = styled.button`
@@ -35,8 +35,16 @@ export const IconButton: React.FC<Props> = (props) => {
   const { onClick, iconName, selected, disabled } = props;
 
   return (
-    <Button onClick={onClick} className={selected ? "selected" : ""} disabled={disabled}>
-      <Image disabled={disabled} alt={iconName} src={`./icon/${iconName}.jpeg`} />
+    <Button
+      onClick={onClick}
+      className={selected ? "selected" : ""}
+      disabled={disabled}
+    >
+      <Image
+        disabled={disabled}
+        alt={iconName}
+        src={`./icon/${iconName}.jpeg`}
+      />
     </Button>
   );
 };
