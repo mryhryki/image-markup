@@ -11,7 +11,7 @@
     "build": "vite build",
     "dev": "vite --port 3000",
     "deploy": "run-s lint type build sync",
-    "sync": "aws s3 sync ./dist/ s3://mryhryki-cdn/contents/app/image-markup/ --no-progress --exclude '*.DS_Store*'",
+    "sync": "aws s3 sync ./dist/ s3://mryhryki-cdn/app/image-markup/ --no-progress --exclude '*.DS_Store*'",
     "preview": "vite preview --port 3000",
     "fmt": "biome check --write ./src/",
     "lint": "biome check ./src/",
