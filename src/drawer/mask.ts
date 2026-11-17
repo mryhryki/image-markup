@@ -1,7 +1,13 @@
 import { canvasRGB } from "stackblur-canvas";
 import type { Position } from "../util/user_action_event";
 
-const getMaskColor = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): string => {
+const getMaskColor = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+): string => {
   const MIX = 0.25; // 文字色を混ぜる割合（0〜1）
   const MIN_DISTANCE = 60; // 背景色と別の色とみなす最小距離（RGB ユークリッド距離）
   const SHIFT = 0.12; // 文字色がない場合の明度のずらし幅
@@ -21,13 +27,20 @@ const getMaskColor = (ctx: CanvasRenderingContext2D, x: number, y: number, width
   const counts = new Map<number, number>();
   for (let k = 0; k < data.length; k += 4) {
     if (data[k + 3] === 0) continue;
-    const key = ((data[k] & QUANTIZE) << 16) | ((data[k + 1] & QUANTIZE) << 8) | (data[k + 2] & QUANTIZE);
+    const key =
+      ((data[k] & QUANTIZE) << 16) |
+      ((data[k + 1] & QUANTIZE) << 8) |
+      (data[k + 2] & QUANTIZE);
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
   if (counts.size === 0) return FALLBACK;
 
-  const toRgb = (key: number): [number, number, number] => [(key >> 16) & 0xff, (key >> 8) & 0xff, key & 0xff];
-  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  const toRgb = (key: number): [number, number, number] => [
+    (key >> 16) & 0xff,
+    (key >> 8) & 0xff,
+    key & 0xff,
+  ];
+  const sorted = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
 
   const bg = toRgb(sorted[0][0]);
   const fgEntry = sorted.find(([key]) => {
@@ -59,7 +72,11 @@ const getMaskColor = (ctx: CanvasRenderingContext2D, x: number, y: number, width
   return `hsl(${hue.toFixed(1)}, ${(sat * 100).toFixed(1)}%, ${(nl * 100).toFixed(1)}%)`;
 };
 
-export const drawMask = (context: CanvasRenderingContext2D, from: Position, to: Position): void => {
+export const drawMask = (
+  context: CanvasRenderingContext2D,
+  from: Position,
+  to: Position,
+): void => {
   const x = Math.min(from.x, to.x);
   const y = Math.min(from.y, to.y);
   const width = Math.abs(from.x - to.x);
